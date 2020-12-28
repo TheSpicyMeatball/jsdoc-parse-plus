@@ -1,7 +1,7 @@
 {
   "name": "jsdoc-parse-plus",
   "version": "0.0.1",
-  "description": "Parse jsdoc comments into JavaScript objects. You can use standard jsdoc tags or your own custom tags.",
+  "description": "Parse, add, remove, or modify standard jsdoc tags or custom tags from comments; Generate jsdoc comments from JavaScript data.",
   "main": "lib/es5/index.js",
   "module": "lib/es6/index.js",
   "repository": {
@@ -15,7 +15,8 @@
     "utils",
     "utilities",
     "javascript",
-    "comments"
+    "comments",
+    "documentation"
   ],
   "author": "Michael Paravano",
   "license": "MIT",

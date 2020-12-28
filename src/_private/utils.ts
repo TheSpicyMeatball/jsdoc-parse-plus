@@ -1,4 +1,4 @@
-import { ITag, IDescriptive, IParam, IType, InlineLink } from './types';
+import { ITag, IDescriptive, IParam, IType, InlineLink } from '../types';
 
 export const first = <T=any, TDefault=any>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[0] || defaultValue;
 export const last =  <T=any, TDefault=any>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[array.length - 1] || defaultValue;
@@ -16,23 +16,23 @@ export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
 };
 export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0);
 
-export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}( *)(.*)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
-const removeJsDocCommentStars = (jsDoc: string) => jsDoc.replace(/(?:^ *?\* |\/\*\* ?| *?\*\/)/gm, '').replace(/ ?\*$/, '').trim();
+export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}( *)(.*)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
+const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?:^ *?\* |\/\*\* ?| *?\*\/)/gm, '').replace(/ ?\*$/, '').trim();
 
 /**
 * Gets the 'description' tag
 *
-* @param {string} jsDoc The entire jsDoc string
+* @param {string} jsdoc The entire jsdoc string
 * @returns {ITag}
 */
-export const getDescription = (jsDoc: string) : ITag => {
+export const getDescription = (jsdoc: string) : ITag => {
   // from tag
-  const description = getTag('@description')(jsDoc);
+  const description = getTag('@description')(jsdoc);
 
   if (isNotNullOrEmpty(description)) return description as ITag;
 
   // no tag - single line
-  const text = first(jsDoc.match(/\/\*\*( *)(.*)( *)\*\//), '');
+  const text = first(jsdoc.match(/\/\*\*( *)(.*)( *)\*\//), '');
  
   if (isNotNullOrEmpty(text)) {
     const raw = removeJsDocCommentStars(text);
@@ -45,7 +45,7 @@ export const getDescription = (jsDoc: string) : ITag => {
   }
  
   // no tag - multiline
-  const raw = first(jsDoc.match(/\/\*\*( *)(.*)(\r\n|\r|\n)*((?:(?:(?! @).)(?:\{@link|\{@tutorial))*(?:(?!( @)).)*(\r\n|\r|\n)?)*/), '').replace(/^(?:\/\*\*| *\*\/? *)/gm, '').trim();
+  const raw = first(jsdoc.match(/\/\*\*( *)(.*)(\r\n|\r|\n)*((?:(?:(?! @).)(?:\{@link|\{@tutorial))*(?:(?!( @)).)*(\r\n|\r|\n)?)*/), '').replace(/^(?:\/\*\*| *\*\/? *)/gm, '').trim();
  
   if (isNotNullOrEmpty(raw)) {
     return {
@@ -61,11 +61,11 @@ export const getDescription = (jsDoc: string) : ITag => {
 /**
  * Gets 'param' tags
  *
- * @param {string} jsDoc - The entire jsDoc string
+ * @param {string} jsdoc - The entire jsdoc string
  * @returns {IParam[]}
  */
-export const getTemplate = () => (jsDoc: string) : IDescriptive[] => {
-  const rawParams = getTags('@template')(jsDoc) as ITag[];
+export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
+  const rawParams = getTags('@template')(jsdoc) as ITag[];
 
   if (isNullOrEmpty(rawParams)) return [];
 
@@ -112,11 +112,11 @@ export const getTemplate = () => (jsDoc: string) : IDescriptive[] => {
 /**
  * Gets 'param' tags
  *
- * @param {string} jsDoc - The entire jsDoc string
+ * @param {string} jsdoc - The entire jsdoc string
  * @returns {IParam[]}
  */
-export const getParam = (tag: '@param' | '@property') => (jsDoc: string) : IParam[] => {
-  const rawParams = getTags(tag)(jsDoc) as ITag[];
+export const getParam = (tag: '@param' | '@property') => (jsdoc: string) : IParam[] => {
+  const rawParams = getTags(tag)(jsdoc) as ITag[];
 
   if (isNullOrEmpty(rawParams)) return [];
 
@@ -154,13 +154,13 @@ export const getParam = (tag: '@param' | '@property') => (jsDoc: string) : IPara
 /**
  * Gets tag shaped like TType
  *
- * @param {string} jsDoc - The entire jsDoc string
+ * @param {string} jsdoc - The entire jsdoc string
  * @returns {IType}
  */
-export const getTyped = (tag: string) => (jsDoc: string) : IType => {
+export const getTyped = (tag: string) => (jsdoc: string) : IType => {
   const _tag = tag.startsWith('@') ? tag : '@' + tag;
   const regex = new RegExp(`${_tag} *(?:{(.*?)} *)?(?:- )?(.*)`, 'g');
-  const match = first(Array.from(jsDoc.matchAll(regex)));
+  const match = first(Array.from(jsdoc.matchAll(regex)));
 
   if (isNullOrEmpty(match)) return;
 
@@ -176,18 +176,20 @@ export const getTyped = (tag: string) => (jsDoc: string) : IType => {
  * Gets the requested tag data
  * 
  * @param {string} tag - The tag to find
- * @param {string} jsDoc - The entire jsDoc string
+ * @param {string} jsdoc - The entire jsdoc string
  * @returns {(ITag | ITag[])}
  */
-export const getTag = (tag: string) => (jsDoc: string) : ITag | ITag[] => {
+export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
   const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const matches = jsDoc.match(getTagRegExp(_tag));
+  const matches = jsdoc.match(getTagRegExp(_tag));
  
   if (isNullOrEmpty(matches)) {
     return;
   }
- 
-  if (first(matches).match(/\*/g).length <= 1) {
+
+  const match = first(matches).match(/\*/g);
+
+  if (isNotNullOrEmpty(match) && match.length <= 1) {
     const raw = removeJsDocCommentStars(first(matches, ''));
     return {
       tag: _tag,
@@ -206,16 +208,16 @@ export const getTag = (tag: string) => (jsDoc: string) : ITag | ITag[] => {
 };
 
 /**
-* Gets all matching jsDoc tags
+* Gets all matching jsdoc tags
 *
 * @param {string} tag - The name of the tag to get
-* @param {string} jsDoc - The entire jsDoc string
+* @param {string} jsdoc - The entire jsdoc string
 * @returns {string[]} Array of string values for each matching tag
 */
-export const getTags = (tag: string) => (jsDoc: string) : Array<ITag | ITag[]> => {
+export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> => {
   const _tag = tag.startsWith('@') ? tag : '@' + tag;
   const regex = new RegExp(`${_tag}( )*(.*)(\\r\\n|\\r|\\n)?( *\\*(?:(?!(@)).)*(\\r\\n|\\r|\\n)*)*`, 'gm');
-  const matches = [...Array.from(jsDoc.matchAll(regex))];
+  const matches = [...Array.from(jsdoc.matchAll(regex))];
  
   if (isNullOrEmpty(matches)) {
     return [];
@@ -233,16 +235,16 @@ export const getTags = (tag: string) => (jsDoc: string) : Array<ITag | ITag[]> =
     });
   }
  
-  return [getTag(_tag)(jsDoc)];
+  return [getTag(_tag)(jsdoc)];
 };
 
 
-const processInlineLinks = (jsDoc: string, replace?: (link: InlineLink) => string) : string => {
-  if (isNullOrEmpty(jsDoc)) return jsDoc;
+const processInlineLinks = (jsdoc: string, replace?: (link: InlineLink) => string) : string => {
+  if (isNullOrEmpty(jsdoc)) return jsdoc;
 
-  const matches = Array.from(jsDoc.matchAll(/(?:\[(.*?)\])?{@(link|tutorial) (.*?)(?:(?:\|| +)(.*?))?}/gm));
+  const matches = Array.from(jsdoc.matchAll(/(?:\[(.*?)\])?{@(link|tutorial) (.*?)(?:(?:\|| +)(.*?))?}/gm));
 
-  if (isNullOrEmpty(matches)) return jsDoc;
+  if (isNullOrEmpty(matches)) return jsdoc;
 
   for (const match of matches) {
     const tag = match[2].trim();
@@ -256,17 +258,17 @@ const processInlineLinks = (jsDoc: string, replace?: (link: InlineLink) => strin
     }
 
     if (replace) {
-      jsDoc = replace({ tag, url, text, raw: match[0] });
+      jsdoc = replace({ tag, url, text, raw: match[0] });
     } else {
-      jsDoc = jsDoc.replace(match[0], `<a href="${url}">${text}</a>`);
+      jsdoc = jsdoc.replace(match[0], `<a href="${url}">${text}</a>`);
     }
   }
 
-  return jsDoc;
+  return jsdoc;
 }
 
-/** Gets a Map object with all possible jsDoc tags and their parsing function */
-export const getTagMap = () => new Map<string, (jsDoc: string) => ITag | Array<ITag|ITag[]>>([
+/** Gets a Map object with all possible jsdoc tags and their parsing function */
+export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<ITag|ITag[]>>([
   ['@abstract', getTag('@abstract')],
   ['@access', getTag('@access')],
   ['@alias', getTag('@alias')],

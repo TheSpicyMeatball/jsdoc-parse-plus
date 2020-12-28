@@ -5,12 +5,12 @@
 <p>Hello friend. Have you ever had the need to:</p>
 
 <ul>
-  <li>...query a set of React Children by type or otherwise?</li>
-  <li>...reject and remove some of your children for whatever [judgement free] reason?</li>
-  <li>...ensure that your children return content at some level?</li>
+  <li>...parse standard and/or custom jsdoc tags into usable JavaScript objects?</li>
+  <li>...programmatically add, modify, or remove jsdoc tags?</li>
+  <li>...programmatically generate jsdoc comments from JavaScript data?</li>
 </ul>
 
-<p>If you answered yes to any of those questions, then it sounds like your children could use a nanny to help bring order to the chaos...</p>
+<p>If you answered yes to any of those questions, then <%= package.name %> is for you!</p>
 
 <p><b>Version:</b> <%= package.version %></p>
 
@@ -21,14 +21,42 @@ $ npm install <%= package.name %> --save
 ```
 <%- generateSummaryTable(utils) %>
 
+<h2>Interfaces &amp; Types</h2>
+
+```
+export interface ITag {
+  tag: string;
+  value?: string;
+  raw: string;
+}
+
+export interface IDescriptive extends ITag {
+  description?: string;
+}
+
+export interface IParam extends IDescriptive {
+  name: string;
+  optional?: boolean;
+  defaultValue?: string;
+}
+
+export interface IType extends IDescriptive {
+  type?: string;
+}
+
+export type InlineLink = {
+  tag: string,
+  url: string,
+  text: string,
+  raw: string,
+};
+
+export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
+export type ToJsdocStringConfig = { indentChars?: number };
+```
+
 <% for(var f=0; f < utils.length; f++) { %>
-  <%- generateTable(utils[f]) %>
-
-<h4>Import</h4>
-
-```
-import <%= (utils[f].import?.present ? utils[f].import.value : '{ ' + utils[f].name + ' }') %> from '<%= package.name %>';
-```
+  <%- generateTable(utils[f], package.name) %>
 
 <% if (utils[f].examples) { %>
 <h4>Examples</h4>
@@ -82,6 +110,7 @@ README.md -- this file
 <h2>Dependencies</h2>
 
 <% const dependencies = package.dependencies ? Object.getOwnPropertyNames(package.dependencies) : []; %>
+<% if (dependencies && dependencies.length > 0) { %>
 <table>
 <% dependencies.forEach(function(dependency) { %>
   <tr>
@@ -94,3 +123,6 @@ README.md -- this file
   </tr>
 <% }) %>
 </table>
+<% } else { %>
+None
+<% } %>

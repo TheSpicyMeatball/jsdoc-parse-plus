@@ -15,7 +15,7 @@ const jsdoc = `
  * // Custom docgen tag
  * @example
  * // Examples...
- * getTag('@description')(jsDoc);
+ * getTag('@description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
  */`;
@@ -210,8 +210,8 @@ describe('getTag', () => {
   test('getTag => @example', () => {
     expect(getTag(jsdoc)('@example')).toStrictEqual([{ 
       tag: '@example', 
-      value: '// Examples...\ngetTag(\'@description\')(jsDoc);',
-      raw: '@example\n// Examples...\ngetTag(\'@description\')(jsDoc);',
+      value: '// Examples...\ngetTag(\'@description\')(jsdoc);',
+      raw: '@example\n// Examples...\ngetTag(\'@description\')(jsdoc);',
     }]);
   });
 
@@ -239,7 +239,7 @@ describe('getTag', () => {
        * // Custom docgen tag
        * @example
        * // Examples...
-       * getTag('@description')(jsDoc);
+       * getTag('@description')(jsdoc);
        */`;
     expect(getTag(jsdoc)('@returns')).toStrictEqual({ 
       tag: '@returns', 
@@ -264,7 +264,7 @@ describe('getTag', () => {
        * // Custom docgen tag
        * @example
        * // Examples...
-       * getTag('@description')(jsDoc);
+       * getTag('@description')(jsdoc);
        */`;
     expect(getTag(jsdoc)('@returns')).toStrictEqual({ 
       tag: '@returns', 
@@ -390,7 +390,7 @@ describe('getTag', () => {
        * // Custom docgen tag
        * @example
        * // Examples...
-       * getTag('@description')(jsDoc);
+       * getTag('@description')(jsdoc);
        */`;
     expect(getTag(jsdoc)('@returns')).toStrictEqual({ 
       tag: '@returns', 

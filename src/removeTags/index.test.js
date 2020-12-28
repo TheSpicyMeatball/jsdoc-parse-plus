@@ -15,7 +15,7 @@ const jsdoc = `
  * // Custom docgen tag
  * @example
  * // Examples...
- * getTag('description')(jsDoc);
+ * getTag('description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
  * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
@@ -165,7 +165,7 @@ describe('removeTags', () => {
  * // Custom docgen tag
  * @example
  * // Examples...
- * getTag('description')(jsDoc);
+ * getTag('description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
  */`);

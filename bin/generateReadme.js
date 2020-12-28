@@ -1,8 +1,10 @@
 const ejs = require('ejs');
-const { readdirSync, readFileSync, writeFileSync } = require('fs');
+const { existsSync, readdirSync, readFileSync, writeFileSync } = require('fs');
 const { join, resolve } = require('path');
 const dirTree = require('directory-tree');
-const { jsDocParseTags, removeTags } = require('../dist/lib/es5/index');
+const { parseJsdocTags, removeTags } = require('../dist/lib/es5/index');
+const { isNotNullOrEmpty } = require('../dist/lib/es5/_private/utils');
+const htmlEncode = require('js-htmlencode').htmlEncode;
 
 const first = (array, defaultValue) => array && array[0] || defaultValue;
 
@@ -30,7 +32,7 @@ const index = async () => {
   const es5 = join(__dirname, '..', 'dist', 'lib', 'es5');
   const es6 = join(__dirname, '..', 'dist', 'lib', 'es6');
 
-  const dirs = readdirSync(src).filter(x => !x.includes('.') && !x.startsWith('_'));
+  const dirs = readdirSync(src).filter(x => !x.includes('.') && !x.startsWith('_') && x !== 'types');
   let utils = [];
 
   const tags = [
@@ -48,8 +50,7 @@ const index = async () => {
     const functions = Array.from(readFileSync(join(src, dir, 'index.ts'), 'utf8').toString().matchAll(/\/\*\*(\n|\r\n)( \*(.*)(\n|\r\n))* \*\/(\n|\r\n)(.*)/gm)).reduce((accumulator, item) => [...accumulator, item[0]] , []);
     
     for (const func of functions) {
-      console.log(getFunctionNameFromExpression(func));
-      utils = [...utils, { ...getFunctionNameFromExpression(func), ...jsDocParseTags(func, tags) }];
+      utils = [...utils, { ...getFunctionNameFromExpression(func), ...parseJsdocTags(func, tags) }];
     }
   }
 
@@ -90,7 +91,7 @@ const index = async () => {
   console.log('Done');
 };
 
-const generateTable = util => {
+const generateTable = (util, packageName) => {
   const getValue = key => {
     if (util[key]?.value?.length > 0) {
       const startsWithTag = new RegExp(/^ *<.*?>/g);
@@ -100,7 +101,7 @@ const generateTable = util => {
 
     return '';
   }
-// console.log(util);
+
   const description = getValue('description');
   const since = util.since ? `<p>Since ${util.since.value}</p>\n` : '';
   const hasDefault = util.param.some(x => x.defaultValue !== undefined);
@@ -114,6 +115,27 @@ const generateTable = util => {
   } else if (util?.docgen_note) {
     notes = `<blockquote><p>${util.docgen_note.value}</p></blockquote>`;
   }
+
+  let examples = existsSync(join(__dirname, '..', 'src', util.name, 'EXAMPLES.md')) ? '\n\n' + readFileSync(join(__dirname, '..', 'src', util.name, 'EXAMPLES.md'), 'utf8') + '\n\n' : '';
+
+  if (isNotNullOrEmpty(util.examples)) {
+    examples = examples + '\n\n' + `
+
+\`\`\`    
+    ${util.examples.map(x => x.value).join('\n')}
+\`\`\`
+
+    `;
+  }
+
+  const _import = `
+  <h4>Import</h4>
+
+\`\`\`
+import ${isNotNullOrEmpty(util.docgen_import) ? util.docgen_import.value : `{ ${util.name} }`} from '${packageName}';
+\`\`\`
+
+  `;
 
   return (
     '\n\n' +
@@ -132,7 +154,7 @@ const generateTable = util => {
       <tbody>` +
       util.param.map(x => (
         `<tr><td><p><b>${x.name}${x.optional ? ' <span>(optional)</span>' : ''}</b></p>${x.description}</td>` +
-        `<td>${x.type}</td>` + 
+        `<td>${htmlEncode(x.type)}</td>` + 
         (hasDefault ? `<td>${x.optional && x.defaultValue !== undefined ? x.defaultValue : ''}</td>` : '') + 
         '</tr>'
       )).join('') +
@@ -141,7 +163,9 @@ const generateTable = util => {
     `<p><b>Returns:</b> ${util.returns.raw.replace('@returns', '').trim()}</p>` +
     notes +
     types +
-    details
+    details +
+    _import +
+    examples
   );
 };
 

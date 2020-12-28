@@ -1,4 +1,8 @@
+export { getJsdocStringsFromFile } from './getJsdocStringsFromFile';
 export { getTag } from './getTag';
-export { jsDocParse } from './jsDocParse';
-export { jsDocParseTags } from './jsDocParseTags';
+export { parseJsdoc } from './parseJsdoc';
+export { parseJsdocTags } from './parseJsdocTags';
 export { removeTags } from './removeTags';
+export { toJsdocString } from './toJsdocString';
+
+export { GetJsDocStringsFromFileConfig, IDescriptive, InlineLink, ITag, IType, ToJsdocStringConfig } from './types';

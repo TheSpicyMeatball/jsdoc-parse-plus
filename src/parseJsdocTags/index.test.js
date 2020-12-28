@@ -1,4 +1,4 @@
-const { jsDocParseTags } = require('../../dist/lib/es5/index');
+const { parseJsdocTags } = require('../../dist/lib/es5/index');
 
 const jsdoc = `
 /**
@@ -15,7 +15,7 @@ const jsdoc = `
  * // Custom docgen tag
  * @example
  * // Examples...
- * getTag('@description')(jsDoc);
+ * getTag('@description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
  * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
@@ -23,9 +23,9 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-describe('jsDocParseTags', () => {
+describe('parseJsdocTags', () => {
   test('all except @template + @bogus', () => {
-    expect(jsDocParseTags(jsdoc, ['@description', '@since', '@param', '@returns', '@docgen_types', '@example', 'customTag', '@see', '@bogus'])).toStrictEqual({ 
+    expect(parseJsdocTags(jsdoc, ['@description', '@since', '@param', '@returns', '@docgen_types', '@example', 'customTag', '@see', '@bogus'])).toStrictEqual({ 
       bogus: undefined,
       description: {
         tag: '@description', 
@@ -77,8 +77,8 @@ describe('jsDocParseTags', () => {
       ],
       example: [{ 
         tag: '@example', 
-        value: '// Examples...\ngetTag(\'@description\')(jsDoc);',
-        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsDoc);',
+        value: '// Examples...\ngetTag(\'@description\')(jsdoc);',
+        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsdoc);',
       }],
       returns: { 
         tag: '@returns', 

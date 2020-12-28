@@ -1,4 +1,4 @@
-const { jsDocParse } = require('../../dist/lib/es5/index');
+const { parseJsdoc } = require('../../dist/lib/es5/index');
 
 const jsdoc = `
 /**
@@ -15,7 +15,7 @@ const jsdoc = `
  * // Custom docgen tag
  * @example
  * // Examples...
- * getTag('@description')(jsDoc);
+ * getTag('@description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
  * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
@@ -23,9 +23,9 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-describe('jsDocParse', () => {
+describe('parseJsdoc', () => {
   test('standard', () => {
-    expect(jsDocParse(jsdoc)).toStrictEqual({ 
+    expect(parseJsdoc(jsdoc)).toStrictEqual({ 
       description: {
         tag: '@description', 
         value: 'The description goes here',
@@ -82,8 +82,8 @@ describe('jsDocParse', () => {
       ],
       example: [{ 
         tag: '@example', 
-        value: '// Examples...\ngetTag(\'@description\')(jsDoc);',
-        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsDoc);',
+        value: '// Examples...\ngetTag(\'@description\')(jsdoc);',
+        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsdoc);',
       }],
       returns: { 
         tag: '@returns', 
@@ -100,7 +100,7 @@ describe('jsDocParse', () => {
   });
 
   test('standard + custom', () => {
-    expect(jsDocParse(jsdoc, ['customTag', 'docgen_types'])).toStrictEqual({ 
+    expect(parseJsdoc(jsdoc, ['customTag', 'docgen_types'])).toStrictEqual({ 
       description: {
         tag: '@description', 
         value: 'The description goes here',
@@ -157,8 +157,8 @@ describe('jsDocParse', () => {
       ],
       example: [{ 
         tag: '@example', 
-        value: '// Examples...\ngetTag(\'@description\')(jsDoc);',
-        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsDoc);',
+        value: '// Examples...\ngetTag(\'@description\')(jsdoc);',
+        raw: '@example\n// Examples...\ngetTag(\'@description\')(jsdoc);',
       }],
       returns: { 
         tag: '@returns', 

@@ -19,8 +19,11 @@ export interface IType extends IDescriptive {
 }
 
 export type InlineLink = {
-  tag: string;
+  tag: string,
   url: string,
   text: string,
-  raw: string;
+  raw: string,
 };
+
+export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
+export type ToJsdocStringConfig = { indentChars?: number };
