@@ -1,0 +1,26 @@
+{
+  "name": "jsdoc-parse-plus",
+  "version": "0.0.1",
+  "description": "Parse jsdoc comments into JavaScript objects. You can use standard jsdoc tags or your own custom tags.",
+  "main": "lib/es5/index.js",
+  "module": "lib/es6/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheSpicyMeatball/jsdoc-parse-plus.git"
+  },
+  "keywords": [
+    "jsdoc",
+    "parse",
+    "parser",
+    "utils",
+    "utilities",
+    "javascript",
+    "comments"
+  ],
+  "author": "Michael Paravano",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TheSpicyMeatball/jsdoc-parse-plus/issues"
+  },
+  "homepage": "https://github.com/TheSpicyMeatball/jsdoc-parse-plus#readme"
+}
