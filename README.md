@@ -79,7 +79,7 @@ export type ToJsdocStringConfig = { indentChars?: number };
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>file</b></p>String contents of a file</td><td>string</td><td></td></tr><tr><td><p><b>config= false } <span>(optional)</span></b></p>The configuration for output formatting</td><td>GetJsDocStringsFromFileConfig</td><td>{ keepIndent </td></tr></tbody>
+      <tbody><tr><td><p><b>file</b></p>String contents of a file</td><td>string</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>GetJsDocStringsFromFileConfig</td><td>{ keepIndent = false }</td></tr></tbody>
     </table><p><b>Returns:</b> {string[]} Array of jsdoc strings</p><h4>Supporting Types</h4>
 
 ```
@@ -573,7 +573,7 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag|ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config= 0 } <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToJsdocStringConfig</td><td>{ indentChars </td></tr></tbody>
+      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag|ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToJsdocStringConfig</td><td>{ indentChars = 0 }</td></tr></tbody>
     </table><p><b>Returns:</b> {string} The jsdoc string</p><h4>Supporting Types</h4>
 
 ```
@@ -633,7 +633,7 @@ README.md -- this file
   └───/es5
     └───/_private
       └───utils.d.ts - 1.88 KB
-      └───utils.js - 12.29 KB
+      └───utils.js - 12.32 KB
     └───/getJsdocStringsFromFile
       └───index.d.ts - 785 Bytes
       └───index.js - 2.32 KB
@@ -660,7 +660,7 @@ README.md -- this file
   └───/es6
     └───/_private
       └───utils.d.ts - 1.88 KB
-      └───utils.js - 10.91 KB
+      └───utils.js - 10.93 KB
     └───/getJsdocStringsFromFile
       └───index.d.ts - 785 Bytes
       └───index.js - 2.15 KB

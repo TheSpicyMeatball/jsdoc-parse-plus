@@ -132,7 +132,7 @@ export const getParam = (tag: '@param' | '@property') => (jsdoc: string) : IPara
     let defaultValue: string;
 
     if (optional && !name.startsWith('{')) {
-      defaultValue = last(name.split('=', 2));
+      defaultValue = name.replace(first(name.split('=', 1)) + '=', '');
       name = name.replace('=' + defaultValue, '');
     }
     
