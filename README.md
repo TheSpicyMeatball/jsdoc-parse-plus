@@ -149,7 +149,7 @@ getJsdocStringsFromFile(file);
         <th>Type</th></tr>
       </thead>
       <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td></tr></tbody>
-    </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag|ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p>
+    </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag | ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p>
   <h4>Import</h4>
 
 ```
@@ -574,7 +574,7 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag|ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToJsdocStringConfig</td><td>{ indentChars = 0 }</td></tr></tbody>
+      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag | ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToJsdocStringConfig</td><td>{ indentChars = 0 }</td></tr></tbody>
     </table><p><b>Returns:</b> {string} The jsdoc string</p><h4>Supporting Types</h4>
 
 ```
@@ -640,8 +640,8 @@ README.md -- this file
       └───index.d.ts - 788 Bytes
       └───index.js - 2.32 KB
     └───/getTag
-      └───index.d.ts - 421 Bytes
-      └───index.js - 922 Bytes
+      └───index.d.ts - 423 Bytes
+      └───index.js - 924 Bytes
       └───index.d.ts - 407 Bytes
       └───index.js - 1.27 KB
     └───/parseJsdoc
@@ -654,8 +654,8 @@ README.md -- this file
       └───index.d.ts - 298 Bytes
       └───index.js - 1.9 KB
     └───/toJsdocString
-      └───index.d.ts - 780 Bytes
-      └───index.js - 1.57 KB
+      └───index.d.ts - 782 Bytes
+      └───index.js - 1.58 KB
     └───/types
       └───index.d.ts - 601 Bytes
       └───index.js - 77 Bytes
@@ -667,8 +667,8 @@ README.md -- this file
       └───index.d.ts - 788 Bytes
       └───index.js - 2.15 KB
     └───/getTag
-      └───index.d.ts - 421 Bytes
-      └───index.js - 798 Bytes
+      └───index.d.ts - 423 Bytes
+      └───index.js - 800 Bytes
       └───index.d.ts - 407 Bytes
       └───index.js - 290 Bytes
     └───/parseJsdoc
@@ -681,8 +681,8 @@ README.md -- this file
       └───index.d.ts - 298 Bytes
       └───index.js - 1.79 KB
     └───/toJsdocString
-      └───index.d.ts - 780 Bytes
-      └───index.js - 1.43 KB
+      └───index.d.ts - 782 Bytes
+      └───index.js - 1.44 KB
     └───/types
       └───index.d.ts - 601 Bytes
       └───index.js - 11 Bytes

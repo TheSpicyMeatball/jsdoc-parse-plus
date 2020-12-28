@@ -5,7 +5,7 @@ import { getTagMap, getTags } from './../_private/utils';
  * Gets a jsdoc tag's data; if the tag type supports multiple entries, an array of the tags will be returned
  *
  * @param {string} jsdoc - The entire jsdoc string
- * @returns {(tag: string) => ITag | Array<ITag|ITag[]>} Function to get the tag or array of all tags that go by that name
+ * @returns {(tag: string) => ITag | Array<ITag | ITag[]>} Function to get the tag or array of all tags that go by that name
  */
 export const getTag = (jsdoc: string) : (tag: string) => ITag | Array<ITag|ITag[]> => {
   const tagMap = getTagMap();

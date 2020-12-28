@@ -5,7 +5,7 @@ import { isNullOrEmpty } from '../_private/utils';
  * Convert object to a jsdoc string
  * 
  * @since v1.0.0
- * @param {{[tag: string]: ITag | Array<ITag|ITag[]>}} tags - Object containing keys of tags
+ * @param {{[tag: string]: ITag | Array<ITag | ITag[]>}} tags - Object containing keys of tags
  * @param {ToJsdocStringConfig} [config={ indentChars = 0 }] - The configuration for output formatting
  * @returns {string} The jsdoc string
  * @docgen_types
