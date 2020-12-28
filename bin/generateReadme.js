@@ -160,7 +160,7 @@ import ${isNotNullOrEmpty(util.docgen_import) ? util.docgen_import.value : `{ ${
       )).join('') +
     `</tbody>
     </table>` +
-    `<p><b>Returns:</b> ${util.returns.raw.replace('@returns', '').trim()}</p>` +
+    `<p><b>Returns:</b> ${htmlEncode(util.returns.raw.replace('@returns', '').trim())}</p>` +
     notes +
     types +
     details +

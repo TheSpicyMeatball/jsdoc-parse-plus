@@ -11,6 +11,7 @@ import { isNullOrEmpty } from '../_private/utils';
  * @docgen_types
  * // The configuration type for the util:
  * //   indentChars?: number = 0 - The number of characters that the output string should be indented
+ * 
  * export type ToJsdocStringConfig = { indentChars?: number };
  * @docgen_import { toJsdocString, ToJsdocStringConfig }
  */

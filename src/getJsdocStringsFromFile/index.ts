@@ -11,6 +11,7 @@ import { GetJsDocStringsFromFileConfig } from '../types';
  * @docgen_types
  * // The configuration type for the util:
  * //   keepIndent?: boolean = false - Whether or not to keep the indentation of the entire jsdoc comment block
+ * 
  * export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
  * @docgen_import { getJsdocStringsFromFile, GetJsDocStringsFromFileConfig }
  */

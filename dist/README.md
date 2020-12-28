@@ -85,6 +85,7 @@ export type ToJsdocStringConfig = { indentChars?: number };
 ```
 // The configuration type for the util:
 //   keepIndent?: boolean = false - Whether or not to keep the indentation of the entire jsdoc comment block
+
 export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
 ```
   <h4>Import</h4>
@@ -148,7 +149,7 @@ getJsdocStringsFromFile(file);
         <th>Type</th></tr>
       </thead>
       <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td></tr></tbody>
-    </table><p><b>Returns:</b> {(tag: string) => ITag | Array<ITag|ITag[]>} Function to get the tag or array of all tags that go by that name</p>
+    </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag|ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p>
   <h4>Import</h4>
 
 ```
@@ -579,6 +580,7 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
 ```
 // The configuration type for the util:
 //   indentChars?: number = 0 - The number of characters that the output string should be indented
+
 export type ToJsdocStringConfig = { indentChars?: number };
 ```
   <h4>Import</h4>
@@ -635,7 +637,7 @@ README.md -- this file
       └───utils.d.ts - 1.88 KB
       └───utils.js - 12.32 KB
     └───/getJsdocStringsFromFile
-      └───index.d.ts - 785 Bytes
+      └───index.d.ts - 788 Bytes
       └───index.js - 2.32 KB
     └───/getTag
       └───index.d.ts - 421 Bytes
@@ -652,7 +654,7 @@ README.md -- this file
       └───index.d.ts - 298 Bytes
       └───index.js - 1.9 KB
     └───/toJsdocString
-      └───index.d.ts - 777 Bytes
+      └───index.d.ts - 780 Bytes
       └───index.js - 1.57 KB
     └───/types
       └───index.d.ts - 601 Bytes
@@ -662,7 +664,7 @@ README.md -- this file
       └───utils.d.ts - 1.88 KB
       └───utils.js - 10.93 KB
     └───/getJsdocStringsFromFile
-      └───index.d.ts - 785 Bytes
+      └───index.d.ts - 788 Bytes
       └───index.js - 2.15 KB
     └───/getTag
       └───index.d.ts - 421 Bytes
@@ -679,7 +681,7 @@ README.md -- this file
       └───index.d.ts - 298 Bytes
       └───index.js - 1.79 KB
     └───/toJsdocString
-      └───index.d.ts - 777 Bytes
+      └───index.d.ts - 780 Bytes
       └───index.js - 1.43 KB
     └───/types
       └───index.d.ts - 601 Bytes
