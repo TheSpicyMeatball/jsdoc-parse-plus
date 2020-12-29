@@ -100,9 +100,9 @@ export type GetCommentsFromFileConfig = { keepIndent?: boolean };
 import { getCommentsFromFile, GetCommentsFromFileConfig } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const file = `
@@ -140,8 +140,6 @@ getCommentsFromFile(file);
 
 
 
-
-
 <hr />
 
   
@@ -162,9 +160,9 @@ getCommentsFromFile(file);
 import { getTag } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const jsdoc = `
@@ -264,8 +262,6 @@ tag('@customTag');
 
 
 
-
-
 <hr />
 
   
@@ -287,9 +283,9 @@ tag('@customTag');
 import { parse } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const jsdoc = `
@@ -410,8 +406,6 @@ parse(jsdoc, ['customTag', 'docgen_types']);
 
 
 
-
-
 <hr />
 
   
@@ -433,9 +427,9 @@ parse(jsdoc, ['customTag', 'docgen_types']);
 import { parseTags } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const jsdoc = `
@@ -496,8 +490,6 @@ parseTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@this
 
 
 
-
-
 <hr />
 
   
@@ -518,9 +510,9 @@ parseTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@this
 import { removeTags } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const jsdoc = `
@@ -565,8 +557,6 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
 
 
 
-
-
 <hr />
 
   
@@ -595,9 +585,9 @@ export type ToCommentStringConfig = { indentChars?: number };
 import { toCommentString, ToCommentStringConfig } from 'jsdoc-parse-plus';
 ```
 
-  
+  <h4>Examples</h4>
 
-<h4>Examples</h4>
+
 
 ```
 const tags = {
@@ -620,8 +610,6 @@ toCommentString(tags);
  * @since v1.0.0
  */
 ```
-
-
 
 
 

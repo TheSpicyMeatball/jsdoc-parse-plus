@@ -102,7 +102,7 @@ const generateTable = (util, packageName) => {
     }
 
     return '';
-  }
+  };
 
   const description = getValue('description');
   const since = util.since ? `<p>Since ${util.since.value}</p>\n` : '';
@@ -120,14 +120,18 @@ const generateTable = (util, packageName) => {
 
   let examples = existsSync(join(__dirname, '..', 'src', util.name, 'EXAMPLES.md')) ? '\n\n' + readFileSync(join(__dirname, '..', 'src', util.name, 'EXAMPLES.md'), 'utf8') + '\n\n' : '';
 
-  if (isNotNullOrEmpty(util.examples)) {
+  if (isNotNullOrEmpty(util.example)) {
     examples = examples + '\n\n' + `
 
 \`\`\`    
-    ${util.examples.map(x => x.value).join('\n')}
+${util.example.map(x => x.value).join('\n')}
 \`\`\`
 
     `;
+  }
+
+  if (isNotNullOrEmpty(examples)) {
+    examples = '<h4>Examples</h4>\n\n' + examples
   }
 
   const _import = `

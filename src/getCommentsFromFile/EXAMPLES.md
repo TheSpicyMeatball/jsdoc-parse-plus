@@ -1,5 +1,3 @@
-<h4>Examples</h4>
-
 ```
 const file = `
 /**

@@ -30,14 +30,6 @@ $ npm install <%= package.name %> --save
 <% for(var f=0; f < utils.length; f++) { %>
   <%- generateTable(utils[f], package.name) %>
 
-<% if (utils[f].examples) { %>
-<h4>Examples</h4>
-
-```
-<%- utils[f].examples.map(x => x.value).join('\n') %>
-```
-<% } %>
-
 <hr />
 <% } %>
 
