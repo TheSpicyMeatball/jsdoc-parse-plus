@@ -12,7 +12,7 @@
 
 <p>If you answered yes to any of those questions, then jsdoc-parse-plus is for you!</p>
 
-<p><b>Version:</b> 0.0.1</p>
+<p><b>Version:</b> 1.0.0</p>
 
 <h2>Installation</h2>
 
