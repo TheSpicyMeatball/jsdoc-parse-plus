@@ -14,7 +14,7 @@ const tags = {
   },
 };
 
-toJsdocString(tags);
+toCommentString(tags);
 // outputs =>
 /**
  * The description goes here

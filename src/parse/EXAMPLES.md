@@ -24,7 +24,7 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-parseJsdoc(jsdoc, ['customTag', 'docgen_types']);
+parse(jsdoc, ['customTag', 'docgen_types']);
 // outputs =>
 { 
   description: {

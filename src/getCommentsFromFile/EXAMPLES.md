@@ -16,7 +16,7 @@ asdf
 asdf
 /** The third group */`;
 
-getJsdocStringsFromFile(file);
+getCommentsFromFile(file);
 
 // outputs =>
 [

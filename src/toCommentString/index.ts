@@ -1,21 +1,21 @@
-import { ITag, ToJsdocStringConfig } from '../types';
+import { ITag, ToCommentStringConfig } from '../types';
 import { isNullOrEmpty } from '../_private/utils';
 
 /**
- * Convert object to a jsdoc string
+ * Convert an object to a jsdoc comment string
  * 
  * @since v1.0.0
  * @param {{[tag: string]: ITag | Array<ITag | ITag[]>}} tags - Object containing keys of tags
- * @param {ToJsdocStringConfig} [config={ indentChars = 0 }] - The configuration for output formatting
+ * @param {ToCommentStringConfig} [config={ indentChars = 0 }] - The configuration for output formatting
  * @returns {string} The jsdoc string
  * @docgen_types
  * // The configuration type for the util:
  * //   indentChars?: number = 0 - The number of characters that the output string should be indented
  * 
- * export type ToJsdocStringConfig = { indentChars?: number };
- * @docgen_import { toJsdocString, ToJsdocStringConfig }
+ * export type ToCommentStringConfig = { indentChars?: number };
+ * @docgen_import { toCommentString, ToCommentStringConfig }
  */
-export const toJsdocString = (tags: {[tag: string]: ITag | Array<ITag|ITag[]>}, { indentChars = 0 }: ToJsdocStringConfig = {}) : string => {
+export const toCommentString = (tags: {[tag: string]: ITag | Array<ITag | ITag[]>}, { indentChars = 0 }: ToCommentStringConfig = {}) : string => {
   if (isNullOrEmpty(tags)) return '';
 
   let output = `${' '.repeat(indentChars)}/**`;

@@ -1,4 +1,4 @@
-const { getJsdocStringsFromFile } = require('../../dist/lib/es5/index');
+const { getCommentsFromFile } = require('../../dist/lib/es5/index');
 
 const file = `
 /**
@@ -15,15 +15,15 @@ asdf
 asdf
 /** The third group */`;
 
-describe('getJsdocStringsFromFile', () => {
+describe('getCommentsFromFile', () => {
   test('nothing', () => {
-    expect(getJsdocStringsFromFile(null)).toStrictEqual([]);
-    expect(getJsdocStringsFromFile(undefined)).toStrictEqual([]);
-    expect(getJsdocStringsFromFile('')).toStrictEqual([]);
+    expect(getCommentsFromFile(null)).toStrictEqual([]);
+    expect(getCommentsFromFile(undefined)).toStrictEqual([]);
+    expect(getCommentsFromFile('')).toStrictEqual([]);
   });
 
   test('basic', () => {
-    expect(getJsdocStringsFromFile(file)).toStrictEqual([
+    expect(getCommentsFromFile(file)).toStrictEqual([
       '/**\n * The first group\n * \n * @since v1.0.0\n */',
       '/**\n * The second group\n * \n * @since v1.0.0\n */',
       '/** The third group */',
@@ -45,7 +45,7 @@ describe('getJsdocStringsFromFile', () => {
         asdf
         /** The third group */`;
 
-    expect(getJsdocStringsFromFile(file)).toStrictEqual([
+    expect(getCommentsFromFile(file)).toStrictEqual([
       '/**\n * The first group\n * \n * @since v1.0.0\n */',
       '/**\n * The second group\n * \n * @since v1.0.0\n */',
       '/** The third group */',
@@ -67,7 +67,7 @@ describe('getJsdocStringsFromFile', () => {
         asdf
         /** The third group */`;
 
-    expect(getJsdocStringsFromFile(file, { keepIndent: true })).toStrictEqual([
+    expect(getCommentsFromFile(file, { keepIndent: true })).toStrictEqual([
       `        /**
          * The first group
          * 

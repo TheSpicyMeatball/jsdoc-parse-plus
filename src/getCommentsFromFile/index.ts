@@ -1,21 +1,21 @@
 import { isNullOrEmpty } from '../_private/utils';
-import { GetJsDocStringsFromFileConfig } from '../types';
+import { GetCommentsFromFileConfig } from '../types';
 
 /**
- * Extract all jsdoc strings from a file
+ * Extract all jsdoc comment strings from a file
  * 
  * @since v1.0.0
  * @param {string} file - String contents of a file
- * @param {GetJsDocStringsFromFileConfig} [config={ keepIndent = false }] - The configuration for output formatting
+ * @param {GetCommentsFromFileConfig} [config={ keepIndent = false }] - The configuration for output formatting
  * @returns {string[]} Array of jsdoc strings
  * @docgen_types
  * // The configuration type for the util:
  * //   keepIndent?: boolean = false - Whether or not to keep the indentation of the entire jsdoc comment block
  * 
- * export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
- * @docgen_import { getJsdocStringsFromFile, GetJsDocStringsFromFileConfig }
+ * export type GetCommentsFromFileConfig = { keepIndent?: boolean };
+ * @docgen_import { getCommentsFromFile, GetCommentsFromFileConfig }
  */
-export const getJsdocStringsFromFile = (file: string, { keepIndent = false } : GetJsDocStringsFromFileConfig = {}) : string[] => {
+export const getCommentsFromFile = (file: string, { keepIndent = false } : GetCommentsFromFileConfig = {}) : string[] => {
   if (isNullOrEmpty(file)) return [];
 
   const regex = /^( *\/\*\*.*| *\*\/| *\* * *.*)/gm;

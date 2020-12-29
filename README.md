@@ -30,32 +30,37 @@ $ npm install jsdoc-parse-plus --save
       <th>Description</th>
     </tr>
     </thead>
-    <tbody><tr><td>getJsdocStringsFromFile</td><td>Extract all jsdoc strings from a file</td></tr><tr><td>getTag</td><td>Gets a jsdoc tag's data; if the tag type supports multiple entries, an array of the tags will be returned</td></tr><tr><td>parseJsdoc</td><td>Parse a jsdoc string against all available jsdoc tags and optional custom tags</td></tr><tr><td>parseJsdocTags</td><td>Parse a jsdoc string against provided tags only; custom tags may be included</td></tr><tr><td>removeTags</td><td>Removes a set of tags from jsdoc</td></tr><tr><td>toJsdocString</td><td>Convert object to a jsdoc string</td></tr></tbody>
+    <tbody><tr><td>getCommentsFromFile</td><td>Extract all jsdoc comment strings from a file</td></tr><tr><td>getTag</td><td>Gets a jsdoc tag's data; if the tag type supports multiple entries, an array of the tags will be returned</td></tr><tr><td>parse</td><td>Parse a jsdoc comment string against all potential jsdoc tags and optional custom tags</td></tr><tr><td>parseTags</td><td>Parse a jsdoc comment string against specified tags only; custom tags may be included</td></tr><tr><td>removeTags</td><td>Removes a set of tags from jsdoc</td></tr><tr><td>toCommentString</td><td>Convert an object to a jsdoc comment string</td></tr></tbody>
   </table><hr />
 
 <h2>Interfaces &amp; Types</h2>
 
 ```
+// base tag type
 export interface ITag {
   tag: string;
   value?: string;
   raw: string;
 }
 
+// for tags that can contain a description as part of their value (i.e. @param, @returns, etc)
 export interface IDescriptive extends ITag {
   description?: string;
 }
 
+// additional keys for the @param tag type
 export interface IParam extends IDescriptive {
   name: string;
   optional?: boolean;
   defaultValue?: string;
 }
 
+// for tags that contain a type (i.e. @param, @returns, etc)
 export interface IType extends IDescriptive {
   type?: string;
 }
 
+// for inline link tags like {@link} and {@tutorial}
 export type InlineLink = {
   tag: string,
   url: string,
@@ -63,15 +68,16 @@ export type InlineLink = {
   raw: string,
 };
 
-export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
-export type ToJsdocStringConfig = { indentChars?: number };
+// util configuration types
+export type GetCommentsFromFileConfig = { keepIndent?: boolean };
+export type ToCommentStringConfig = { indentChars?: number };
 ```
 
 
   
 
-<h2>getJsdocStringsFromFile</h2>
-<p>Extract all jsdoc strings from a file</p>
+<h2>getCommentsFromFile</h2>
+<p>Extract all jsdoc comment strings from a file</p>
 <p>Since v1.0.0</p>
 <table>
       <thead>
@@ -79,19 +85,19 @@ export type ToJsdocStringConfig = { indentChars?: number };
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>file</b></p>String contents of a file</td><td>string</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>GetJsDocStringsFromFileConfig</td><td>{ keepIndent = false }</td></tr></tbody>
+      <tbody><tr><td><p><b>file</b></p>String contents of a file</td><td>string</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>GetCommentsFromFileConfig</td><td>{ keepIndent = false }</td></tr></tbody>
     </table><p><b>Returns:</b> {string[]} Array of jsdoc strings</p><h4>Supporting Types</h4>
 
 ```
 // The configuration type for the util:
 //   keepIndent?: boolean = false - Whether or not to keep the indentation of the entire jsdoc comment block
 
-export type GetJsDocStringsFromFileConfig = { keepIndent?: boolean };
+export type GetCommentsFromFileConfig = { keepIndent?: boolean };
 ```
   <h4>Import</h4>
 
 ```
-import { getJsdocStringsFromFile, GetJsDocStringsFromFileConfig } from 'jsdoc-parse-plus';
+import { getCommentsFromFile, GetCommentsFromFileConfig } from 'jsdoc-parse-plus';
 ```
 
   
@@ -114,7 +120,7 @@ asdf
 asdf
 /** The third group */`;
 
-getJsdocStringsFromFile(file);
+getCommentsFromFile(file);
 
 // outputs =>
 [
@@ -264,8 +270,8 @@ tag('@customTag');
 
   
 
-<h2>parseJsdoc</h2>
-<p>Parse a jsdoc string against all available jsdoc tags and optional custom tags</p>
+<h2>parse</h2>
+<p>Parse a jsdoc comment string against all potential jsdoc tags and optional custom tags</p>
 <p>Since v1.0.0</p>
 <table>
       <thead>
@@ -273,12 +279,12 @@ tag('@customTag');
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr></tbody>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr></tbody>
     </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
   <h4>Import</h4>
 
 ```
-import { parseJsdoc } from 'jsdoc-parse-plus';
+import { parse } from 'jsdoc-parse-plus';
 ```
 
   
@@ -309,7 +315,7 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-parseJsdoc(jsdoc, ['customTag', 'docgen_types']);
+parse(jsdoc, ['customTag', 'docgen_types']);
 // outputs =>
 { 
   description: {
@@ -410,8 +416,8 @@ parseJsdoc(jsdoc, ['customTag', 'docgen_types']);
 
   
 
-<h2>parseJsdocTags</h2>
-<p>Parse a jsdoc string against provided tags only; custom tags may be included</p>
+<h2>parseTags</h2>
+<p>Parse a jsdoc comment string against specified tags only; custom tags may be included</p>
 <p>Since v1.0.0</p>
 <table>
       <thead>
@@ -419,12 +425,12 @@ parseJsdoc(jsdoc, ['customTag', 'docgen_types']);
         <th>Param</th>
         <th>Type</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td></tr></tbody>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td></tr></tbody>
     </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
   <h4>Import</h4>
 
 ```
-import { parseJsdocTags } from 'jsdoc-parse-plus';
+import { parseTags } from 'jsdoc-parse-plus';
 ```
 
   
@@ -455,7 +461,7 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-parseJsdocTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@thisTagDoesntExist']);
+parseTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@thisTagDoesntExist']);
 // outputs =>
 { 
   description: {
@@ -565,8 +571,8 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
 
   
 
-<h2>toJsdocString</h2>
-<p>Convert object to a jsdoc string</p>
+<h2>toCommentString</h2>
+<p>Convert an object to a jsdoc comment string</p>
 <p>Since v1.0.0</p>
 <table>
       <thead>
@@ -574,19 +580,19 @@ removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagD
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag | ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToJsdocStringConfig</td><td>{ indentChars = 0 }</td></tr></tbody>
+      <tbody><tr><td><p><b>tags</b></p>Object containing keys of tags</td><td>{[tag: string]: ITag | Array&lt;ITag | ITag[]&gt;}</td><td></td></tr><tr><td><p><b>config <span>(optional)</span></b></p>The configuration for output formatting</td><td>ToCommentStringConfig</td><td>{ indentChars = 0 }</td></tr></tbody>
     </table><p><b>Returns:</b> {string} The jsdoc string</p><h4>Supporting Types</h4>
 
 ```
 // The configuration type for the util:
 //   indentChars?: number = 0 - The number of characters that the output string should be indented
 
-export type ToJsdocStringConfig = { indentChars?: number };
+export type ToCommentStringConfig = { indentChars?: number };
 ```
   <h4>Import</h4>
 
 ```
-import { toJsdocString, ToJsdocStringConfig } from 'jsdoc-parse-plus';
+import { toCommentString, ToCommentStringConfig } from 'jsdoc-parse-plus';
 ```
 
   
@@ -607,7 +613,7 @@ const tags = {
   },
 };
 
-toJsdocString(tags);
+toCommentString(tags);
 // outputs =>
 /**
  * The description goes here
@@ -633,59 +639,59 @@ CHANGELOG.md -- history of changes to the module
 README.md -- this file
 /lib
   └───/es5
-    └───/_private
-      └───utils.d.ts - 1.88 KB
-      └───utils.js - 12.32 KB
-    └───/getJsdocStringsFromFile
-      └───index.d.ts - 788 Bytes
-      └───index.js - 2.32 KB
+    └───/getCommentsFromFile
+      └───index.d.ts - 784 Bytes
+      └───index.js - 2.35 KB
     └───/getTag
-      └───index.d.ts - 423 Bytes
-      └───index.js - 924 Bytes
-      └───index.d.ts - 407 Bytes
-      └───index.js - 1.27 KB
-    └───/parseJsdoc
-      └───index.d.ts - 372 Bytes
-      └───index.js - 1.76 KB
-    └───/parseJsdocTags
-      └───index.d.ts - 338 Bytes
-      └───index.js - 1.08 KB
+      └───index.d.ts - 431 Bytes
+      └───index.js - 951 Bytes
+      └───index.d.ts - 388 Bytes
+      └───index.js - 1.22 KB
+    └───/parse
+      └───index.d.ts - 392 Bytes
+      └───index.js - 1.8 KB
+    └───/parseTags
+      └───index.d.ts - 359 Bytes
+      └───index.js - 1.1 KB
     └───/removeTags
-      └───index.d.ts - 298 Bytes
-      └───index.js - 1.9 KB
-    └───/toJsdocString
-      └───index.d.ts - 782 Bytes
-      └───index.js - 1.58 KB
+      └───index.d.ts - 306 Bytes
+      └───index.js - 1.95 KB
+    └───/toCommentString
+      └───index.d.ts - 825 Bytes
+      └───index.js - 1.64 KB
     └───/types
-      └───index.d.ts - 601 Bytes
-      └───index.js - 77 Bytes
+      └───index.d.ts - 627 Bytes
+      └───index.js - 79 Bytes
+    └───/_private
+      └───utils.d.ts - 1.93 KB
+      └───utils.js - 12.48 KB
   └───/es6
-    └───/_private
-      └───utils.d.ts - 1.88 KB
-      └───utils.js - 10.93 KB
-    └───/getJsdocStringsFromFile
-      └───index.d.ts - 788 Bytes
-      └───index.js - 2.15 KB
+    └───/getCommentsFromFile
+      └───index.d.ts - 784 Bytes
+      └───index.js - 2.19 KB
     └───/getTag
-      └───index.d.ts - 423 Bytes
-      └───index.js - 800 Bytes
-      └───index.d.ts - 407 Bytes
-      └───index.js - 290 Bytes
-    └───/parseJsdoc
-      └───index.d.ts - 372 Bytes
-      └───index.js - 1.61 KB
-    └───/parseJsdocTags
-      └───index.d.ts - 338 Bytes
-      └───index.js - 947 Bytes
+      └───index.d.ts - 431 Bytes
+      └───index.js - 823 Bytes
+      └───index.d.ts - 388 Bytes
+      └───index.js - 272 Bytes
+    └───/parse
+      └───index.d.ts - 392 Bytes
+      └───index.js - 1.67 KB
+    └───/parseTags
+      └───index.d.ts - 359 Bytes
+      └───index.js - 986 Bytes
     └───/removeTags
-      └───index.d.ts - 298 Bytes
-      └───index.js - 1.79 KB
-    └───/toJsdocString
-      └───index.d.ts - 782 Bytes
-      └───index.js - 1.44 KB
+      └───index.d.ts - 306 Bytes
+      └───index.js - 1.83 KB
+    └───/toCommentString
+      └───index.d.ts - 825 Bytes
+      └───index.js - 1.49 KB
     └───/types
-      └───index.d.ts - 601 Bytes
-      └───index.js - 11 Bytes
+      └───index.d.ts - 627 Bytes
+      └───index.js - 12 Bytes
+    └───/_private
+      └───utils.d.ts - 1.93 KB
+      └───utils.js - 11.08 KB
 ```
 
 <a href="#license"></a>

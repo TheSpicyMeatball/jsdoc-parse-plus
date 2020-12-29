@@ -1,8 +1,8 @@
 const ejs = require('ejs');
-const { existsSync, readdirSync, readFileSync, writeFileSync } = require('fs');
+const { existsSync, readdirSync, readFileSync, writeFileSync, exists } = require('fs');
 const { join, resolve } = require('path');
 const dirTree = require('directory-tree');
-const { parseJsdocTags, removeTags } = require('../dist/lib/es5/index');
+const { parseTags, removeTags } = require('../dist/lib/es5/index');
 const { isNotNullOrEmpty } = require('../dist/lib/es5/_private/utils');
 const htmlEncode = require('js-htmlencode').htmlEncode;
 
@@ -32,6 +32,7 @@ const index = async () => {
   const es5 = join(__dirname, '..', 'dist', 'lib', 'es5');
   const es6 = join(__dirname, '..', 'dist', 'lib', 'es6');
 
+  const interfaces = existsSync(join(src, 'types', 'index.ts')) ? readFileSync(join(src, 'types', 'index.ts'), 'utf8') : '';
   const dirs = readdirSync(src).filter(x => !x.includes('.') && !x.startsWith('_') && x !== 'types');
   let utils = [];
 
@@ -50,7 +51,7 @@ const index = async () => {
     const functions = Array.from(readFileSync(join(src, dir, 'index.ts'), 'utf8').toString().matchAll(/\/\*\*(\n|\r\n)( \*(.*)(\n|\r\n))* \*\/(\n|\r\n)(.*)/gm)).reduce((accumulator, item) => [...accumulator, item[0]] , []);
     
     for (const func of functions) {
-      utils = [...utils, { ...getFunctionNameFromExpression(func), ...parseJsdocTags(func, tags) }];
+      utils = [...utils, { ...getFunctionNameFromExpression(func), ...parseTags(func, tags) }];
     }
   }
 
@@ -67,6 +68,7 @@ const index = async () => {
   };
 
   const templateData = {
+    interfaces,
     utils,
     fileTree: tree,
     package: packageData,

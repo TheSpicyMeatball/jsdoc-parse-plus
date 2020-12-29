@@ -1,8 +1,8 @@
-export { getJsdocStringsFromFile } from './getJsdocStringsFromFile';
+export { getCommentsFromFile } from './getCommentsFromFile';
 export { getTag } from './getTag';
-export { parseJsdoc } from './parseJsdoc';
-export { parseJsdocTags } from './parseJsdocTags';
+export { parse } from './parse';
+export { parseTags } from './parseTags';
 export { removeTags } from './removeTags';
-export { toJsdocString } from './toJsdocString';
+export { toCommentString } from './toCommentString';
 
-export { GetJsDocStringsFromFileConfig, IDescriptive, InlineLink, ITag, IType, ToJsdocStringConfig } from './types';
+export { GetCommentsFromFileConfig, IDescriptive, InlineLink, ITag, IType, ToCommentStringConfig } from './types';

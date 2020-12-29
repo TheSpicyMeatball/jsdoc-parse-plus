@@ -1,6 +1,6 @@
-const { toJsdocString } = require('../../dist/lib/es5/index');
+const { toCommentString } = require('../../dist/lib/es5/index');
 
-describe('toJsdocString', () => {
+describe('toCommentString', () => {
   test('basic', () => {
     const tags = {
       description: { 
@@ -15,7 +15,7 @@ describe('toJsdocString', () => {
       },
     };
 
-    expect(toJsdocString(tags)).toBe(`/**
+    expect(toCommentString(tags)).toBe(`/**
  * The description goes here
  * @since v1.0.0
  */`);
@@ -35,7 +35,7 @@ describe('toJsdocString', () => {
       },
   };
 
-    expect(toJsdocString(tags)).toBe(`/**
+    expect(toCommentString(tags)).toBe(`/**
  * @description The description goes here
  * @since v1.0.0
  */`);
@@ -132,7 +132,7 @@ describe('toJsdocString', () => {
       }],
     };
 
-    expect(toJsdocString(tags)).toBe(`/**
+    expect(toCommentString(tags)).toBe(`/**
  * The description goes here
  * @since v1.0.0 (modified v2.0.0)
  * @template T
@@ -168,7 +168,7 @@ describe('toJsdocString', () => {
       },
     };
 
-    expect(toJsdocString(tags, { indentChars: 7 })).toBe(`       /**
+    expect(toCommentString(tags, { indentChars: 7 })).toBe(`       /**
         * The description goes here
         * @since v1.0.0
         */`);

@@ -239,7 +239,7 @@ export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> =
 };
 
 
-const processInlineLinks = (jsdoc: string, replace?: (link: InlineLink) => string) : string => {
+const processInlineLinks = (jsdoc: string) : string => {
   if (isNullOrEmpty(jsdoc)) return jsdoc;
 
   const matches = Array.from(jsdoc.matchAll(/(?:\[(.*?)\])?{@(link|tutorial) (.*?)(?:(?:\|| +)(.*?))?}/gm));
@@ -257,11 +257,7 @@ const processInlineLinks = (jsdoc: string, replace?: (link: InlineLink) => strin
       text = match[1].trim();
     }
 
-    if (replace) {
-      jsdoc = replace({ tag, url, text, raw: match[0] });
-    } else {
-      jsdoc = jsdoc.replace(match[0], `<a href="${url}">${text}</a>`);
-    }
+    jsdoc = jsdoc.replace(match[0], `<a href="${url}">${text}</a>`);
   }
 
   return jsdoc;

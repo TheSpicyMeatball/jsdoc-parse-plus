@@ -24,7 +24,7 @@ const jsdoc = `
  * {@link https://github.com GitHub}.
  */`;
 
-parseJsdocTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@thisTagDoesntExist']);
+parseTags(jsdoc, ['@description', '@since', '@docgen_types', 'customTag', '@thisTagDoesntExist']);
 // outputs =>
 { 
   description: {
