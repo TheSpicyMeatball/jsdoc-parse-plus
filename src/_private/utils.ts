@@ -16,7 +16,7 @@ export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
 };
 export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0);
 
-export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}( *)(.*)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
+export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}(?: |\\r\\n|\\r|\\n)(.*?)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
 const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?:^ *?\* |\/\*\* ?| *?\*\/)/gm, '').replace(/ ?\*$/, '').trim();
 
 /**
@@ -216,7 +216,7 @@ export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
 */
 export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> => {
   const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const regex = new RegExp(`${_tag}( )*(.*)(\\r\\n|\\r|\\n)?( *\\*(?:(?!(@)).)*(\\r\\n|\\r|\\n)*)*`, 'gm');
+  const regex = getTagRegExp(_tag);
   const matches = [...Array.from(jsdoc.matchAll(regex))];
  
   if (isNullOrEmpty(matches)) {

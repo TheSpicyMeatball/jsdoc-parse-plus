@@ -18,6 +18,7 @@ const jsdoc = `
  * getTag('@description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
+ * @customTagDifferent customTag value
  */`;
 
 describe('getTag', () => {
