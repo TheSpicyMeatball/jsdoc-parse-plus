@@ -18,6 +18,9 @@ const jsdoc = `
  * getTag('@description')(jsdoc);
  * @customTag customTag value 1
  * @customTag customTag value 2
+ * @customTag
+ *
+ * customTag value 3
  * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
  * Also, check out {@link http://www.google.com|Google} and
  * {@link https://github.com GitHub}.
@@ -186,6 +189,11 @@ describe('parse', () => {
           tag: '@customTag', 
           value: 'customTag value 2',
           raw: '@customTag customTag value 2',
+        },
+        { 
+          tag: '@customTag', 
+          value: 'customTag value 3',
+          raw: '@customTag\n\ncustomTag value 3',
         },
       ],
     });

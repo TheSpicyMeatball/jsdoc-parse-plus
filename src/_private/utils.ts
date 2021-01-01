@@ -17,7 +17,7 @@ export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
 export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0);
 
 export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}(?: |\\r\\n|\\r|\\n)(.*?)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
-const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?:^ *?\* |\/\*\* ?| *?\*\/)/gm, '').replace(/ ?\*$/, '').trim();
+const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?: *?\*\/|^ *?\* ?|\/\*\* ?)/gm, '').replace(/ ?\*$/, '').trim();
 
 /**
 * Gets the 'description' tag
@@ -115,7 +115,7 @@ export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
  * @param {string} jsdoc - The entire jsdoc string
  * @returns {IParam[]}
  */
-export const getParam = (tag: '@param' | '@property') => (jsdoc: string) : IParam[] => {
+export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argument') => (jsdoc: string) : IParam[] => {
   const rawParams = getTags(tag)(jsdoc) as ITag[];
 
   if (isNullOrEmpty(rawParams)) return [];
@@ -238,7 +238,11 @@ export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> =
   return [getTag(_tag)(jsdoc)];
 };
 
-
+/**
+ * Converts links and tutorial links to anchor tags
+ * @param jsdoc - Any jsdoc string
+ * @returns {string} The updated string with anchor tags
+ */
 const processInlineLinks = (jsdoc: string) : string => {
   if (isNullOrEmpty(jsdoc)) return jsdoc;
 
@@ -268,30 +272,43 @@ export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<I
   ['@abstract', getTag('@abstract')],
   ['@access', getTag('@access')],
   ['@alias', getTag('@alias')],
+  ['@arg', getParam('@arg')], // alias for @param
+  ['@argument', getParam('@argument')], // alias for @param
   ['@async', getTag('@async')],
   ['@augments', getTag('@augments')],
   ['@author', getTag('@author')],
   ['@borrows', getTag('@borrows')],
+  ['@category', getTag('@category')],
   ['@callback', getTag('@callback')],
   ['@class', getTag('@class')],
   ['@classdesc', getTag('@classdesc')],
+  ['@cosnt', getTag('@const')], // alias for @constant
   ['@constant', getTag('@constant')],
+  ['@constructor', getTag('@constructor')], // alias for @class
   ['@constructs', getTag('@constructs')],
   ['@copyright', getTag('@copyright')],
   ['@default', getTag('@default')],
+  ['@defaultvalue', getTag('@defaultvalue')], // alias for @default
   ['@deprecated', getTag('@deprecated')],
+  ['@desc', getDescription], // alias for @description
   ['@description', getDescription],
+  ['@emits', getTag('@emits')], // alias for @fires
   ['@enum', getTyped('@enum')],
   ['@event', getTag('@event')],
   ['@example', getTags('@example')],
+  ['@exception', getTags('@exception')], // alias for @throws
   ['@exports', getTag('@exports')],
+  ['@extends', getTag('@extends')], // alias for @augments
   ['@external', getTag('@external')],
   ['@file', getTag('@file')],
+  ['@fileoverview', getTag('@fileoverview')], // alias for @file
   ['@fires', getTag('@fires')],
+  ['@func', getTag('@func')], // alias for @function
   ['@function', getTag('@function')],
   ['@generator', getTag('@generator')],
   ['@global', getTag('@global')],
   ['@hideconstructor', getTag('@hideconstructor')],
+  ['@host', getTag('@host')], // alias for @external
   ['@ignore', getTag('@ignore')],
   ['@implements', getTyped('@implements')],
   ['@inheritdoc', getTag('@inheritdoc')],
@@ -304,20 +321,24 @@ export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<I
   ['@listens', getTag('@listens')],
   ['@member', getTyped('@member')],
   ['@memberof', getTag('@memberof')],
+  ['@method', getTag('@method')], // alias for @function
   ['@mixes', getTag('@mixes')],
   ['@mixin', getTag('@mixin')],
   ['@module', getTag('@module')],
   ['@name', getTag('@name')],
   ['@namespace', getTag('@namespace')],
   ['@override', getTag('@override')],
+  ['@overview', getTag('@overview')], // alias for @file
   ['@package', getTag('@package')],
   ['@param', getParam('@param')],
   ['@private', getTag('@private')],
+  ['@prop', getParam('@prop')], // alias for @property
   ['@property', getParam('@property')],
   ['@protected', getTag('@protected')],
   ['@public', getTag('@public')],
   ['@readonly', getTag('@readonly')],
   ['@requires', getTags('@requires')],
+  ['@return', getTyped('@return')], // alias for @returns
   ['@returns', getTyped('@returns')],
   ['@see', getTags('@see')],
   ['@since', getTag('@since')],
@@ -330,7 +351,10 @@ export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<I
   ['@tutorial', getTags('@tutorial')],
   ['@type', getTyped('@type')],
   ['@typedef', getTyped('@typedef')],
+  ['@var', getTyped('@var')], // alias for @member
   ['@variation', getTag('@variation')],
   ['@version', getTag('@version')],
+  ['@virtual', getTag('@virtual')], // alias for @abstract
+  ['@yield', getTyped('@yield')], // alias for @yields
   ['@yields', getTyped('@yields')]
 ]);

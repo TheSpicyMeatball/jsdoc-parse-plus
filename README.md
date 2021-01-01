@@ -12,13 +12,8 @@
 
 <p>If you answered yes to any of those questions, then jsdoc-parse-plus is for you!</p>
 
-<p><b>Version:</b> 1.0.1</p>
+<p><b>Version:</b> 1.1.0</p>
 
-<h2>Installation</h2>
-
-```
-$ npm install jsdoc-parse-plus --save
-```
 
 
 <h2>Summary of Utils</h2>
@@ -526,32 +521,13 @@ const jsdoc = `
  * @param {GetChildByTypeConfig} [{ customTypeKey: '__TYPE', prioritized: false }] - The configuration params
  * @param {string} [optionalParam='default text'] An optional param with a description without a dash
  * @returns {T} - The first matching child
- * @docgen_types
- * // Custom docgen tag
- * @example
- * // Examples...
- * getTag('description')(jsdoc);
- * @customTag customTag value 1
- * @customTag customTag value 2
- * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
- * Also, check out {@link http://www.google.com|Google} and
- * {@link https://github.com GitHub}.
  */`;
 
-removeTags(jsdoc, ['@description', '@since', '@example', 'customTag', '@thisTagDoesntExist']);
+removeTags(jsdoc, ['@description', '@template', '@param']);
 // outputs =>
 /**
- * @template T
- * @param {T} children - JSX children
- * @param {any[]} types - Types of children to match
- * @param {GetChildByTypeConfig} [{ customTypeKey: '__TYPE', prioritized: false }] - The configuration params
- * @param {string} [optionalParam='default text'] An optional param with a description without a dash
+ * @since v1.0.0 (modified v2.0.0)
  * @returns {T} - The first matching child
- * @docgen_types
- * // Custom docgen tag
- * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
- * Also, check out {@link http://www.google.com|Google} and
- * {@link https://github.com GitHub}.
  */
 ```
 
@@ -651,8 +627,8 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 79 Bytes
     └───/_private
-      └───utils.d.ts - 1.93 KB
-      └───utils.js - 12.54 KB
+      └───utils.d.ts - 1.97 KB
+      └───utils.js - 13.5 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
@@ -678,8 +654,8 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 12 Bytes
     └───/_private
-      └───utils.d.ts - 1.93 KB
-      └───utils.js - 11.13 KB
+      └───utils.d.ts - 1.97 KB
+      └───utils.js - 11.93 KB
 ```
 
 <a href="#license"></a>
