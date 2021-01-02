@@ -22,14 +22,12 @@ export const toCommentString = (tags: {[tag: string]: ITag | Array<ITag | ITag[]
   const indent = ' '.repeat(indentChars + 1);
   
   for (const key in tags) {
-    if (Object.prototype.hasOwnProperty.call(tags, key)) {
-      const tag = tags[key];
+    const tag = tags[key];
 
-      if (Array.isArray(tag)) {
-        output = output + tag.map(t => `\n${indent}* ${(t as ITag).raw.replace(/(\r\n|\r|\n)/g, `\n${indent}* `)}`).join('')
-      } else {
-        output = `${output}\n${indent}* ${(tags[key] as ITag).raw.replace(/(\r\n|\r|\n)/g, `\n${indent}* `)}`;
-      }      
+    if (Array.isArray(tag)) {
+      output = output + tag.map(t => `\n${indent}* ${(t as ITag).raw.replace(/(\r\n|\r|\n)/g, `\n${indent}* `)}`).join('')
+    } else {
+      output = `${output}\n${indent}* ${(tags[key] as ITag).raw.replace(/(\r\n|\r|\n)/g, `\n${indent}* `)}`;
     }
   }
 

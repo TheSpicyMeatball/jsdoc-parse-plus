@@ -20,6 +20,8 @@ describe('getCommentsFromFile', () => {
     expect(getCommentsFromFile(null)).toStrictEqual([]);
     expect(getCommentsFromFile(undefined)).toStrictEqual([]);
     expect(getCommentsFromFile('')).toStrictEqual([]);
+    expect(getCommentsFromFile('/**  */')).toStrictEqual(['/**  */']);    
+    expect(getCommentsFromFile('/**\n *\n */')).toStrictEqual(['/**\n *\n */']);
   });
 
   test('basic', () => {

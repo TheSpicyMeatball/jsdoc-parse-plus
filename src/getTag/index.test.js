@@ -63,6 +63,14 @@ describe('getTag', () => {
     });
   });
 
+  test('getTag => no @', () => {
+    expect(getTag(jsdoc)('since')).toStrictEqual({ 
+      tag: '@since', 
+      value: 'v1.0.0 (modified v2.0.0)',
+      raw: '@since v1.0.0 (modified v2.0.0)',
+    });
+  });
+
   test('getTag => @template', () => {
     const jsdoc = `
       /**
@@ -403,5 +411,51 @@ describe('getTag', () => {
 
   test('getTag => not found', () => {
     expect(getTag(jsdoc)('@extends')).toBe(undefined);
+  });
+
+  test('getTag => @template => not found', () => {
+    expect(getTag(`/** There is no template tag in this comment */`)('@template')).toStrictEqual([]);
+  });
+
+  test('getTag => @param', () => {
+    const jsdoc = `
+/**
+ * The description goes here
+ * 
+ * @param Bad param
+ * @param {any[]} types - Types of children to match
+ * @param {GetChildByTypeConfig} [{ customTypeKey: '__TYPE', prioritized: false }] - The configuration params
+ * @param {string} [optionalParam='default text'] An optional param with a description without a dash
+ * @returns {T} - The first matching child
+ */`;
+    expect(getTag(jsdoc)('@param')).toStrictEqual([
+      { 
+        tag: '@param', 
+        type: 'any[]',
+        name: 'types',
+        description: 'Types of children to match',
+        optional: false,
+        defaultValue: undefined,
+        raw: '@param {any[]} types - Types of children to match',
+      },
+      { 
+        tag: '@param', 
+        type: 'GetChildByTypeConfig',
+        name: '{ customTypeKey: \'__TYPE\', prioritized: false }',
+        description: 'The configuration params',
+        optional: true,
+        defaultValue: undefined,
+        raw: '@param {GetChildByTypeConfig} [{ customTypeKey: \'__TYPE\', prioritized: false }] - The configuration params',
+      },
+      { 
+        tag: '@param', 
+        type: 'string',
+        name: 'optionalParam',
+        description: 'An optional param with a description without a dash',
+        optional: true,
+        defaultValue: '\'default text\'',
+        raw: '@param {string} [optionalParam=\'default text\'] An optional param with a description without a dash',
+      },
+    ]);
   });
 });

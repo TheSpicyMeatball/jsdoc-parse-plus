@@ -17,12 +17,7 @@ export const removeTags = (jsdoc: string, tags: string[]) : string => {
     const matches = Array.from(jsdoc.matchAll(getTagRegExp(_tag)));
 
     for (const match of matches) {
-      if (match[5]?.length > 0 && match[5].trim() === '*/') {
-        jsdoc = jsdoc.replace(match[0], '/\n');
-      } else {
-        const end = new RegExp(/\*\/ *$/);
-        jsdoc = jsdoc.replace(match[0], end.test(match[0]) ? '/' : '');
-      }
+      jsdoc = jsdoc.replace(match[0], '');
     }
   }
 
@@ -32,8 +27,6 @@ export const removeTags = (jsdoc: string, tags: string[]) : string => {
 const removeTaglessDescription = (jsdoc: string) : string => {
   const regex = /\/\*\*( *)(.*)(\r\n|\r|\n)*((?:(?:(?! @).)(?:\{@link|\{@tutorial))*(?:(?!( @)).)*(\r\n|\r|\n)?)*/gm;
   const match = first(Array.from(jsdoc.matchAll(regex)));
-
-  if (isNullOrEmpty(match)) return jsdoc;
 
   if (isNotNullOrEmpty(match[2])) {
     const end = new RegExp(/\*\/ *$/);

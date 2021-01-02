@@ -1,20 +1,17 @@
 import { ITag, IDescriptive, IParam, IType, InlineLink } from '../types';
 
 export const first = <T=any, TDefault=any>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[0] || defaultValue;
-export const last =  <T=any, TDefault=any>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[array.length - 1] || defaultValue;
 
 export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
-  if (value === null || value === undefined || (typeof value === 'string' && value === '')) return false;
+  if (value === null || value === undefined || (typeof value === 'string' && value === '') || (typeof value === 'object' && Object.keys(value).length <= 0)) return false;
 
   if (Array.isArray(value)) {
     return  value.length > 0;
   }
 
-  if (typeof value === 'string' && value.length <= 0) return false;
-
   return true;
 };
-export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0);
+export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0) || (typeof value === 'object' && Object.keys(value).length <= 0);
 
 export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}(?: |\\r\\n|\\r|\\n)(.*?)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
 const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?: *?\*\/|^ *?\* ?|\/\*\* ?)/gm, '').replace(/ ?\*$/, '').trim();
@@ -54,8 +51,6 @@ export const getDescription = (jsdoc: string) : ITag => {
       raw,
     };
   }
-    
-  return;
 };
 
 /**

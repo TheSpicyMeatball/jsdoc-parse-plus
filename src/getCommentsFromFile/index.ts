@@ -26,10 +26,10 @@ export const getCommentsFromFile = (file: string, { keepIndent = false } : GetCo
 
   for (const match of matches) {
     if (match[0].indexOf('/**') >= 0 && match[0].indexOf('*/') >= 0) {
-      output = [...output, current + (current.length > 0 ? '\n' : '') + (keepIndent ? match[0] : match[0].trimStart())];
+      output = [...output, current + (keepIndent ? match[0] : match[0].trimStart())];
       current = '';
     } else if (match[0].indexOf('*/') >= 0) {
-      output = [...output, current + (current.length > 0 ? '\n' : '') + (keepIndent ? match[0] : ' ' + match[0].trimStart())];
+      output = [...output, current + '\n' + (keepIndent ? match[0] : ' ' + match[0].trimStart())];
       current = '';
     } else if (match[0].indexOf('/**') >= 0) {
       current = (keepIndent ? match[0] : match[0].trimStart());

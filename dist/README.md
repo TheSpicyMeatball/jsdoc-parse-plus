@@ -605,7 +605,7 @@ README.md -- this file
   └───/es5
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
-      └───index.js - 2.35 KB
+      └───index.js - 2.29 KB
     └───/getTag
       └───index.d.ts - 431 Bytes
       └───index.js - 951 Bytes
@@ -619,20 +619,20 @@ README.md -- this file
       └───index.js - 1.1 KB
     └───/removeTags
       └───index.d.ts - 306 Bytes
-      └───index.js - 1.95 KB
+      └───index.js - 1.58 KB
     └───/toCommentString
       └───index.d.ts - 825 Bytes
-      └───index.js - 1.64 KB
+      └───index.js - 1.54 KB
     └───/types
       └───index.d.ts - 627 Bytes
       └───index.js - 79 Bytes
     └───/_private
-      └───utils.d.ts - 1.97 KB
-      └───utils.js - 13.52 KB
+      └───utils.d.ts - 1.86 KB
+      └───utils.js - 13.41 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
-      └───index.js - 2.19 KB
+      └───index.js - 2.13 KB
     └───/getTag
       └───index.d.ts - 431 Bytes
       └───index.js - 823 Bytes
@@ -646,16 +646,16 @@ README.md -- this file
       └───index.js - 986 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
-      └───index.js - 1.83 KB
+      └───index.js - 1.45 KB
     └───/toCommentString
       └───index.d.ts - 825 Bytes
-      └───index.js - 1.49 KB
+      └───index.js - 1.39 KB
     └───/types
       └───index.d.ts - 627 Bytes
       └───index.js - 12 Bytes
     └───/_private
-      └───utils.d.ts - 1.97 KB
-      └───utils.js - 11.95 KB
+      └───utils.d.ts - 1.86 KB
+      └───utils.js - 11.88 KB
 ```
 
 <a href="#license"></a>

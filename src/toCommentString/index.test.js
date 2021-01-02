@@ -173,4 +173,10 @@ describe('toCommentString', () => {
         * @since v1.0.0
         */`);
   });
+
+  test('empty', () => {
+    expect(toCommentString(null)).toBe('');
+    expect(toCommentString(undefined)).toBe('');
+    expect(toCommentString({})).toBe('');
+  });
 });
