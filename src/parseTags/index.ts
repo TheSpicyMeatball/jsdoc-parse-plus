@@ -11,8 +11,7 @@ import { getTag } from '../getTag';
 export const parseTags = (jsdoc: string, tags: string[]) => {
   const tag = getTag(jsdoc);
   
-  return tags.reduce((accumulator, x) => ({
-    ...accumulator,
+  return tags.reduce((accumulator, x) => Object.assign(accumulator, {
     [x.replace('@', '')]: tag(x),
   }), {});
 };

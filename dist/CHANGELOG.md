@@ -1,3 +1,7 @@
+## [1.2.0] - 2021-01-02
+- Integrated CI
+- Added badges to README.md
+
 ## [1.1.1] - 2021-01-02
 - Fixed bug with similar alias tags returning incorrect tag name
 

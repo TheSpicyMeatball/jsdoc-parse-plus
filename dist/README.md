@@ -15,7 +15,7 @@
 
 <p>If you answered yes to any of those questions, then jsdoc-parse-plus is for you!</p>
 
-<p><b>Version:</b> 1.1.1</p>
+<p><b>Version:</b> 1.2.0</p>
 
 
 
@@ -616,10 +616,10 @@ README.md -- this file
       └───index.js - 1.22 KB
     └───/parse
       └───index.d.ts - 392 Bytes
-      └───index.js - 1.8 KB
+      └───index.js - 1.44 KB
     └───/parseTags
       └───index.d.ts - 359 Bytes
-      └───index.js - 1.1 KB
+      └───index.js - 750 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.58 KB
@@ -643,10 +643,10 @@ README.md -- this file
       └───index.js - 272 Bytes
     └───/parse
       └───index.d.ts - 392 Bytes
-      └───index.js - 1.67 KB
+      └───index.js - 1.3 KB
     └───/parseTags
       └───index.d.ts - 359 Bytes
-      └───index.js - 986 Bytes
+      └───index.js - 607 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.45 KB

@@ -17,10 +17,9 @@ export const parse = (jsdoc: string, customTags: string[] = []) => {
     const data = tag(item);
 
     if (data && (!Array.isArray(data) || data.length > 0)) {
-      return {
-        ...accumulator,
+      return Object.assign(accumulator, {
         [item.replace('@', '')]: data,
-      };
+      });
     }
     
     return accumulator;
