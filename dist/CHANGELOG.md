@@ -1,3 +1,6 @@
+## [1.1.1] - 2021-01-02
+- Fixed bug with similar alias tags returning incorrect tag name
+
 ## [1.1.0] - 2021-01-01
 - Added jsdoc alias tags
 

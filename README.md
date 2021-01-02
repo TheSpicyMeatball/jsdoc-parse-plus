@@ -12,7 +12,7 @@
 
 <p>If you answered yes to any of those questions, then jsdoc-parse-plus is for you!</p>
 
-<p><b>Version:</b> 1.1.0</p>
+<p><b>Version:</b> 1.1.1</p>
 
 
 
@@ -628,7 +628,7 @@ README.md -- this file
       └───index.js - 79 Bytes
     └───/_private
       └───utils.d.ts - 1.97 KB
-      └───utils.js - 13.5 KB
+      └───utils.js - 13.52 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
@@ -655,7 +655,7 @@ README.md -- this file
       └───index.js - 12 Bytes
     └───/_private
       └───utils.d.ts - 1.97 KB
-      └───utils.js - 11.93 KB
+      └───utils.js - 11.95 KB
 ```
 
 <a href="#license"></a>

@@ -159,7 +159,7 @@ export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argu
  */
 export const getTyped = (tag: string) => (jsdoc: string) : IType => {
   const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const regex = new RegExp(`${_tag} *(?:{(.*?)} *)?(?:- )?(.*)`, 'g');
+  const regex = new RegExp(`${_tag} *(?:(?![A-Za-z]))(?:{(.*?)} *)?(?:- )?(.*)`, 'g');
   const match = first(Array.from(jsdoc.matchAll(regex)));
 
   if (isNullOrEmpty(match)) return;
@@ -282,7 +282,7 @@ export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<I
   ['@callback', getTag('@callback')],
   ['@class', getTag('@class')],
   ['@classdesc', getTag('@classdesc')],
-  ['@cosnt', getTag('@const')], // alias for @constant
+  ['@const', getTag('@const')], // alias for @constant
   ['@constant', getTag('@constant')],
   ['@constructor', getTag('@constructor')], // alias for @class
   ['@constructs', getTag('@constructs')],
@@ -290,7 +290,7 @@ export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<I
   ['@default', getTag('@default')],
   ['@defaultvalue', getTag('@defaultvalue')], // alias for @default
   ['@deprecated', getTag('@deprecated')],
-  ['@desc', getDescription], // alias for @description
+  ['@desc', getTag('@desc')], // alias for @description
   ['@description', getDescription],
   ['@emits', getTag('@emits')], // alias for @fires
   ['@enum', getTyped('@enum')],
