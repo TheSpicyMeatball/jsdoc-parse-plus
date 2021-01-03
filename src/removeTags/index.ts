@@ -1,4 +1,4 @@
-import { first, getTagRegExp, isNullOrEmpty, isNotNullOrEmpty } from '../_private/utils';
+import { first, getTagRegExp, isNotNullOrEmpty } from '../_private/utils';
 
 /**
  * Removes a set of tags from jsdoc
@@ -33,5 +33,5 @@ const removeTaglessDescription = (jsdoc: string) : string => {
     return end.test(match[2]) ? jsdoc.replace(regex, '/** */') : jsdoc.replace(regex, '/**\n *');
   }
 
-  return jsdoc.replace(regex, '/**\n *')
+  return jsdoc.replace(regex, '/**\n *');
 };

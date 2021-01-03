@@ -1,8 +1,9 @@
-import { ITag, IDescriptive, IParam, IType, InlineLink } from '../types';
+import { ITag, IDescriptive, IParam, IType } from '../types';
+import { TagMapFunction } from '../_private/types';
 
-export const first = <T=any, TDefault=any>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[0] || defaultValue;
+export const first = <T=unknown, TDefault=T>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[0] || defaultValue;
 
-export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
+export const isNotNullOrEmpty = <T=unknown>(value: T) : boolean => {
   if (value === null || value === undefined || (typeof value === 'string' && value === '') || (typeof value === 'object' && Object.keys(value).length <= 0)) return false;
 
   if (Array.isArray(value)) {
@@ -11,7 +12,7 @@ export const isNotNullOrEmpty = <T=any>(value: T) : boolean => {
 
   return true;
 };
-export const isNullOrEmpty =  <T=any>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0) || (typeof value === 'object' && Object.keys(value).length <= 0);
+export const isNullOrEmpty =  <T=unknown>(value: T) : boolean => value === null || value === undefined || (typeof value === 'string' && value === '') || (Array.isArray(value) && value.length <= 0) || (typeof value === 'object' && Object.keys(value).length <= 0);
 
 export const getTagRegExp = (tag: string) : RegExp => new RegExp(` ${tag}(?: |\\r\\n|\\r|\\n)(.*?)(\\r\\n|\\r|\\n)*((?:(?:(?! @).)(?:\\{@link|\\{@tutorial))*(?:(?!( @|\\*\\/)).)*(\\r\\n|\\r|\\n)?)*`, 'gm');
 const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?: *?\*\/|^ *?\* ?|\/\*\* ?)/gm, '').replace(/ ?\*$/, '').trim();
@@ -182,7 +183,7 @@ export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
     return;
   }
 
-  const match = first(matches).match(/\*/g);
+  const match = first<string>(matches).match(/\*/g);
 
   if (isNotNullOrEmpty(match) && match.length <= 1) {
     const raw = removeJsDocCommentStars(first(matches, ''));
@@ -246,7 +247,7 @@ const processInlineLinks = (jsdoc: string) : string => {
   if (isNullOrEmpty(matches)) return jsdoc;
 
   for (const match of matches) {
-    const tag = match[2].trim();
+    // const tag = match[2].trim();
     const url = match[3].trim();
     let text = url;
 
@@ -260,10 +261,10 @@ const processInlineLinks = (jsdoc: string) : string => {
   }
 
   return jsdoc;
-}
+};
 
 /** Gets a Map object with all possible jsdoc tags and their parsing function */
-export const getTagMap = () => new Map<string, (jsdoc: string) => ITag | Array<ITag|ITag[]>>([
+export const getTagMap = () : Map<string, TagMapFunction> => new Map<string, TagMapFunction>([
   ['@abstract', getTag('@abstract')],
   ['@access', getTag('@access')],
   ['@alias', getTag('@alias')],

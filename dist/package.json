@@ -8,6 +8,13 @@
     "type": "git",
     "url": "git+https://github.com/TheSpicyMeatball/jsdoc-parse-plus.git"
   },
+  "files": [
+    "lib",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "keywords": [
     "jsdoc",
     "parse",

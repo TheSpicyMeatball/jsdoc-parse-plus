@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/TheSpicyMeatball/jsdoc-parse-plus.svg?branch=main)](https://travis-ci.com/TheSpicyMeatball/jsdoc-parse-plus)
 [![Coverage Status](https://coveralls.io/repos/github/TheSpicyMeatball/jsdoc-parse-plus/badge.svg?branch=main)](https://coveralls.io/github/TheSpicyMeatball/jsdoc-parse-plus?branch=main)
+[![dependencies Status](https://status.david-dm.org/gh/TheSpicyMeatball/jsdoc-parse-plus.svg)](https://david-dm.org/TheSpicyMeatball/jsdoc-parse-plus)
+[![npm version](https://badge.fury.io/js/jsdoc-parse-plus.svg)](https://badge.fury.io/js/jsdoc-parse-plus)
 
 # jsdoc-parse-plus
 
@@ -615,10 +617,10 @@ README.md -- this file
       └───index.d.ts - 388 Bytes
       └───index.js - 1.22 KB
     └───/parse
-      └───index.d.ts - 392 Bytes
+      └───index.d.ts - 413 Bytes
       └───index.js - 1.44 KB
     └───/parseTags
-      └───index.d.ts - 359 Bytes
+      └───index.d.ts - 380 Bytes
       └───index.js - 750 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
@@ -630,8 +632,10 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 79 Bytes
     └───/_private
-      └───utils.d.ts - 1.86 KB
-      └───utils.js - 13.41 KB
+      └───types.d.ts - 120 Bytes
+      └───types.js - 79 Bytes
+      └───utils.d.ts - 1.89 KB
+      └───utils.js - 13.42 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
@@ -642,10 +646,10 @@ README.md -- this file
       └───index.d.ts - 388 Bytes
       └───index.js - 272 Bytes
     └───/parse
-      └───index.d.ts - 392 Bytes
+      └───index.d.ts - 413 Bytes
       └───index.js - 1.3 KB
     └───/parseTags
-      └───index.d.ts - 359 Bytes
+      └───index.d.ts - 380 Bytes
       └───index.js - 607 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
@@ -657,7 +661,9 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 12 Bytes
     └───/_private
-      └───utils.d.ts - 1.86 KB
+      └───types.d.ts - 120 Bytes
+      └───types.js - 12 Bytes
+      └───utils.d.ts - 1.89 KB
       └───utils.js - 11.88 KB
 ```
 

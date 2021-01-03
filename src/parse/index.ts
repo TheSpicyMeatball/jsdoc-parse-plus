@@ -9,7 +9,7 @@ import { getTag } from '../getTag';
  * @param {string[]} [customTags=[]] - Optional array of custom tags parse
  * @returns {object} Object with keys of each parsed tag
  */
-export const parse = (jsdoc: string, customTags: string[] = []) => {
+export const parse = (jsdoc: string, customTags: string[] = []) : Record<string, unknown> => {
   const tag = getTag(jsdoc);
   const allTags =  [...Array.from(getTagMap().keys()), ...customTags];
 
