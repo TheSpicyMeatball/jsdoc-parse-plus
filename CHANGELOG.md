@@ -1,3 +1,6 @@
+## [1.3.0] - 2021-01-03
+- Added linkRenderer for custom renderings of {@link} and {@tutorial}
+
 ## [1.2.0] - 2021-01-02
 - Integrated CI
 - Added badges to README.md

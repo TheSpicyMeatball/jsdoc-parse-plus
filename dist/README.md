@@ -17,7 +17,7 @@
 
 <p>If you answered yes to any of those questions, then jsdoc-parse-plus is for you!</p>
 
-<p><b>Version:</b> 1.2.0</p>
+<p><b>Version:</b> 1.3.0</p>
 
 
 
