@@ -73,6 +73,31 @@ export type GetCommentsFromFileConfig = { keepIndent?: boolean };
 export type ToCommentStringConfig = { indentChars?: number };
 ```
 
+<h2>Using a custom linkRenderer</h2>
+<p>
+  Some functions have an optional <code>linkRenderer</code> which is used to convert inline 
+  <code>{@link}</code> and <code>{@tutorial}</code> tags to clickable links.
+</p>
+<p>
+  By default, the output will be a basic link like:
+</p>
+
+```
+<a href="url">text</a>
+```
+
+<p>However, you can override that by providing your own <code>linkRenderer</code>. For example:</p>
+
+```
+const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.url}">${link.text}</a>
+
+// outputs =>
+<a class="css-class" href="url">text</a>
+```
+
+<p><em>Without further ado, the utils...</em></p>
+<hr />
+
 
   
 
@@ -150,9 +175,9 @@ getCommentsFromFile(file);
       <thead>
       <tr>
         <th>Param</th>
-        <th>Type</th></tr>
+        <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td></tr></tbody>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td><td></td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
     </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag | ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p>
   <h4>Import</h4>
 
@@ -275,7 +300,7 @@ tag('@customTag');
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr></tbody>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
     </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
   <h4>Import</h4>
 
@@ -417,9 +442,9 @@ parse(jsdoc, ['customTag', 'docgen_types']);
       <thead>
       <tr>
         <th>Param</th>
-        <th>Type</th></tr>
+        <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td></tr></tbody>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td><td></td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
     </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
   <h4>Import</h4>
 
@@ -612,16 +637,16 @@ README.md -- this file
       └───index.d.ts - 784 Bytes
       └───index.js - 2.29 KB
     └───/getTag
-      └───index.d.ts - 431 Bytes
-      └───index.js - 951 Bytes
+      └───index.d.ts - 628 Bytes
+      └───index.js - 1.11 KB
       └───index.d.ts - 388 Bytes
       └───index.js - 1.22 KB
     └───/parse
-      └───index.d.ts - 413 Bytes
-      └───index.js - 1.44 KB
+      └───index.d.ts - 638 Bytes
+      └───index.js - 1.6 KB
     └───/parseTags
-      └───index.d.ts - 380 Bytes
-      └───index.js - 750 Bytes
+      └───index.d.ts - 605 Bytes
+      └───index.js - 918 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.58 KB
@@ -632,25 +657,25 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 79 Bytes
     └───/_private
-      └───types.d.ts - 120 Bytes
+      └───types.d.ts - 177 Bytes
       └───types.js - 79 Bytes
-      └───utils.d.ts - 1.89 KB
-      └───utils.js - 13.42 KB
+      └───utils.d.ts - 2.12 KB
+      └───utils.js - 13.47 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
       └───index.js - 2.13 KB
     └───/getTag
-      └───index.d.ts - 431 Bytes
-      └───index.js - 823 Bytes
+      └───index.d.ts - 628 Bytes
+      └───index.js - 1005 Bytes
       └───index.d.ts - 388 Bytes
       └───index.js - 272 Bytes
     └───/parse
-      └───index.d.ts - 413 Bytes
-      └───index.js - 1.3 KB
+      └───index.d.ts - 638 Bytes
+      └───index.js - 1.47 KB
     └───/parseTags
-      └───index.d.ts - 380 Bytes
-      └───index.js - 607 Bytes
+      └───index.d.ts - 605 Bytes
+      └───index.js - 775 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.45 KB
@@ -661,10 +686,10 @@ README.md -- this file
       └───index.d.ts - 627 Bytes
       └───index.js - 12 Bytes
     └───/_private
-      └───types.d.ts - 120 Bytes
+      └───types.d.ts - 177 Bytes
       └───types.js - 12 Bytes
-      └───utils.d.ts - 1.89 KB
-      └───utils.js - 11.88 KB
+      └───utils.d.ts - 2.12 KB
+      └───utils.js - 11.94 KB
 ```
 
 <a href="#license"></a>

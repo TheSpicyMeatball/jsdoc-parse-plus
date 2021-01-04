@@ -27,6 +27,31 @@
 <%= interfaces %>
 ```
 
+<h2>Using a custom linkRenderer</h2>
+<p>
+  Some functions have an optional <code>linkRenderer</code> which is used to convert inline 
+  <code>{@link}</code> and <code>{@tutorial}</code> tags to clickable links.
+</p>
+<p>
+  By default, the output will be a basic link like:
+</p>
+
+```
+<a href="url">text</a>
+```
+
+<p>However, you can override that by providing your own <code>linkRenderer</code>. For example:</p>
+
+```
+const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.url}">${link.text}</a>
+
+// outputs =>
+<a class="css-class" href="url">text</a>
+```
+
+<p><em>Without further ado, the utils...</em></p>
+<hr />
+
 <% for(var f=0; f < utils.length; f++) { %>
   <%- generateTable(utils[f], package.name) %>
 

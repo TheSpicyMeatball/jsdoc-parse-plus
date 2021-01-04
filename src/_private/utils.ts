@@ -1,4 +1,4 @@
-import { ITag, IDescriptive, IParam, IType } from '../types';
+import { ITag, IDescriptive, IParam, IType, InlineLink } from '../types';
 import { TagMapFunction } from '../_private/types';
 
 export const first = <T=unknown, TDefault=T>(array: T[], defaultValue?: TDefault) : T | TDefault => array && array[0] || defaultValue;
@@ -23,32 +23,32 @@ const removeJsDocCommentStars = (jsdoc: string) => jsdoc.replace(/(?: *?\*\/|^ *
 * @param {string} jsdoc The entire jsdoc string
 * @returns {ITag}
 */
-export const getDescription = (jsdoc: string) : ITag => {
+export const getDescription = (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : ITag => {
   // from tag
-  const description = getTag('@description')(jsdoc);
+  const description = getTag('@description')(jsdoc, linkRenderer);
 
   if (isNotNullOrEmpty(description)) return description as ITag;
 
   // no tag - single line
-  const text = first(jsdoc.match(/\/\*\*( *)(.*)( *)\*\//), '');
+  const text = first(jsdoc.match(/\/\*\*((?:(?! @).)*)(?: *)\*\//), '');
  
   if (isNotNullOrEmpty(text)) {
     const raw = removeJsDocCommentStars(text);
 
     return {
       tag: '@description',
-      value: processInlineLinks(raw),
+      value: processInlineLinks(raw, linkRenderer),
       raw,
     };
   }
  
   // no tag - multiline
-  const raw = first(jsdoc.match(/\/\*\*( *)(.*)(\r\n|\r|\n)*((?:(?:(?! @).)(?:\{@link|\{@tutorial))*(?:(?!( @)).)*(\r\n|\r|\n)?)*/), '').replace(/^(?:\/\*\*| *\*\/? *)/gm, '').trim();
+  const raw = first(jsdoc.match(/\/\*\*((?:(?! @).)*)(\r\n|\r|\n)*((?:(?:(?! @).)(?:\{@link|\{@tutorial))*(?:(?!( @)).)*(\r\n|\r|\n)?)*/), '').replace(/^(?:\/\*\*| *\*\/? *)/gm, '').trim();
  
   if (isNotNullOrEmpty(raw)) {
     return {
       tag: '@description',
-      value: processInlineLinks(raw),
+      value: processInlineLinks(raw, linkRenderer),
       raw,
     };
   }
@@ -60,8 +60,8 @@ export const getDescription = (jsdoc: string) : ITag => {
  * @param {string} jsdoc - The entire jsdoc string
  * @returns {IParam[]}
  */
-export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
-  const rawParams = getTags('@template')(jsdoc) as ITag[];
+export const getTemplate = () => (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : IDescriptive[] => {
+  const rawParams = getTags('@template')(jsdoc, linkRenderer) as ITag[];
 
   if (isNullOrEmpty(rawParams)) return [];
 
@@ -74,9 +74,9 @@ export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
         {
           tag: '@template',
           value: match[1].trim(),
-          description: processInlineLinks(match[2].trim()),
+          description: processInlineLinks(match[2].trim(), linkRenderer),
           raw: match[0].trim(),
-        }
+        },
       ];
     }
 
@@ -86,21 +86,18 @@ export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
         {
           tag: '@template',
           raw: match[0].trim(),
-        }
+        },
       ];
     }
-
-    const value = match[2].trim();
-    const description = isNotNullOrEmpty(match[3]) && processInlineLinks(match[3].trim()) || undefined;
     
     return [
       ...accumulator, 
       {
         tag: '@template',
-        value,
-        description,
+        value: processInlineLinks(match[2].trim(), linkRenderer),
+        description: undefined,
         raw: match[0].trim(),
-      }
+      },
     ];
   }, []);
 };
@@ -111,8 +108,8 @@ export const getTemplate = () => (jsdoc: string) : IDescriptive[] => {
  * @param {string} jsdoc - The entire jsdoc string
  * @returns {IParam[]}
  */
-export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argument') => (jsdoc: string) : IParam[] => {
-  const rawParams = getTags(tag)(jsdoc) as ITag[];
+export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argument') => (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : IParam[] => {
+  const rawParams = getTags(tag)(jsdoc, linkRenderer) as ITag[];
 
   if (isNullOrEmpty(rawParams)) return [];
 
@@ -124,7 +121,7 @@ export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argu
     const type = match[1];
     const optional =  match[2].startsWith('[') && match[2].endsWith(']');
     let name = optional ? match[2].substring(1, match[2].length - 1) :  match[2];
-    const description = processInlineLinks(match[3].trim());
+    const description = processInlineLinks(match[3].trim(), linkRenderer);
     let defaultValue: string;
 
     if (optional && !name.startsWith('{')) {
@@ -142,7 +139,7 @@ export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argu
         optional,
         defaultValue,
         raw: `${tag} ${match[0].trim()}`,
-      }
+      },
     ];
   }, []);
 };
@@ -154,17 +151,16 @@ export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argu
  * @returns {IType}
  */
 export const getTyped = (tag: string) => (jsdoc: string) : IType => {
-  const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const regex = new RegExp(`${_tag} *(?:(?![A-Za-z]))(?:{(.*?)} *)?(?:- )?(.*)`, 'g');
+  const regex = new RegExp(`${tag} *(?:(?![A-Za-z]))(?:{(.*?)} *)?(?:- )?(.*)`, 'g');
   const match = first(Array.from(jsdoc.matchAll(regex)));
 
   if (isNullOrEmpty(match)) return;
 
   return {
-    tag: _tag,
+    tag: tag,
     type: match[1]?.trim(),
     description: isNotNullOrEmpty(match[2]) ? match[2].trim() : undefined,
-    raw: match[0]?.trim(),
+    raw: match[0].trim(),
   };
 };
 
@@ -175,9 +171,8 @@ export const getTyped = (tag: string) => (jsdoc: string) : IType => {
  * @param {string} jsdoc - The entire jsdoc string
  * @returns {(ITag | ITag[])}
  */
-export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
-  const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const matches = jsdoc.match(getTagRegExp(_tag));
+export const getTag = (tag: string) => (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : ITag | ITag[] => {
+  const matches = jsdoc.match(getTagRegExp(tag));
  
   if (isNullOrEmpty(matches)) {
     return;
@@ -188,8 +183,8 @@ export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
   if (isNotNullOrEmpty(match) && match.length <= 1) {
     const raw = removeJsDocCommentStars(first(matches, ''));
     return {
-      tag: _tag,
-      value: processInlineLinks(raw.replace(_tag, '').trim()),
+      tag,
+      value: processInlineLinks(raw.replace(tag, '').trim(), linkRenderer),
       raw,
     };
   }
@@ -197,8 +192,8 @@ export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
   const raw = removeJsDocCommentStars(first(matches, ''));
 
   return {
-    tag: _tag,
-    value: processInlineLinks(raw.replace(_tag, '').trim()),
+    tag,
+    value: processInlineLinks(raw.replace(tag, '').trim(), linkRenderer),
     raw,
   };
 };
@@ -210,9 +205,8 @@ export const getTag = (tag: string) => (jsdoc: string) : ITag | ITag[] => {
 * @param {string} jsdoc - The entire jsdoc string
 * @returns {string[]} Array of string values for each matching tag
 */
-export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> => {
-  const _tag = tag.startsWith('@') ? tag : '@' + tag;
-  const regex = getTagRegExp(_tag);
+export const getTags = (tag: string) => (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : Array<ITag | ITag[]> => {
+  const regex = getTagRegExp(tag);
   const matches = [...Array.from(jsdoc.matchAll(regex))];
  
   if (isNullOrEmpty(matches)) {
@@ -224,14 +218,14 @@ export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> =
       const raw = removeJsDocCommentStars(first(x, ''));
 
       return {
-        tag: _tag,
-        value: processInlineLinks(raw.replace(_tag, '').trim()),
+        tag,
+        value: processInlineLinks(raw.replace(tag, '').trim(), linkRenderer),
         raw,
       };
     });
   }
  
-  return [getTag(_tag)(jsdoc)];
+  return [getTag(tag)(jsdoc, linkRenderer)];
 };
 
 /**
@@ -239,15 +233,17 @@ export const getTags = (tag: string) => (jsdoc: string) : Array<ITag | ITag[]> =
  * @param jsdoc - Any jsdoc string
  * @returns {string} The updated string with anchor tags
  */
-const processInlineLinks = (jsdoc: string) : string => {
+const processInlineLinks = (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : string => {
   if (isNullOrEmpty(jsdoc)) return jsdoc;
+
+  const renderLink = linkRenderer || ((link: InlineLink) => `<a href="${link.url}">${link.text}</a>`);
 
   const matches = Array.from(jsdoc.matchAll(/(?:\[(.*?)\])?{@(link|tutorial) (.*?)(?:(?:\|| +)(.*?))?}/gm));
 
   if (isNullOrEmpty(matches)) return jsdoc;
 
   for (const match of matches) {
-    // const tag = match[2].trim();
+    const tag = match[2].trim();
     const url = match[3].trim();
     let text = url;
 
@@ -257,7 +253,7 @@ const processInlineLinks = (jsdoc: string) : string => {
       text = match[1].trim();
     }
 
-    jsdoc = jsdoc.replace(match[0], `<a href="${url}">${text}</a>`);
+    jsdoc = jsdoc.replace(match[0], renderLink({ tag, url, text, raw: match[0] }));
   }
 
   return jsdoc;
@@ -352,5 +348,5 @@ export const getTagMap = () : Map<string, TagMapFunction> => new Map<string, Tag
   ['@version', getTag('@version')],
   ['@virtual', getTag('@virtual')], // alias for @abstract
   ['@yield', getTyped('@yield')], // alias for @yields
-  ['@yields', getTyped('@yields')]
+  ['@yields', getTyped('@yields')],
 ]);

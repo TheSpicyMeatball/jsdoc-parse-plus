@@ -10,7 +10,8 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": { 
-    "no-console": 1,
-    "semi": 2
+    "comma-dangle": [1, "always-multiline"],
+    "no-console": "warn",
+    "semi": "error"
   }
 }

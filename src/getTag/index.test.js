@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { getTag } = require('../../dist/lib/es5/index');
 
 const jsdoc = `
@@ -53,6 +55,10 @@ describe('getTag', () => {
       value: 'The description goes here',
       raw: 'The description goes here',
     });
+  });
+
+  test('getTag => @description => no description', () => {
+    expect(getTag(`/** @readonly */`)('@description')).toBe(undefined);
   });
 
   test('getTag => @since', () => {
@@ -327,6 +333,28 @@ describe('getTag', () => {
     }]);
   });
 
+  test('getTag => inline => {@link} => linkRenderer', () => {
+    const jsdoc = `
+      /**
+       * See {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+       * Also, check out {@link http://www.google.com|Google} and
+       * {@link https://github.com GitHub}.
+       * @see {@link MyClass} and [MyClass's foo property]{@link MyClass#foo}.
+       * Also, check out {@link http://www.google.com|Google} and
+       * {@link https://github.com GitHub}.
+       */`;
+    expect(getTag(jsdoc, link => `<a class="css-class" href="${link.url}">${link.text}</a>`)('@description')).toStrictEqual({ 
+      tag: '@description', 
+      value: 'See <a class="css-class" href="MyClass">MyClass</a> and <a class="css-class" href="MyClass#foo">MyClass\'s foo property</a>.\nAlso, check out <a class="css-class" href="http://www.google.com">Google</a> and\n<a class="css-class" href="https://github.com">GitHub</a>.',
+      raw: 'See {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
+    });
+    expect(getTag(jsdoc, link => `<a class="css-class" href="${link.url}">${link.text}</a>`)('@see')).toStrictEqual([{ 
+      tag: '@see', 
+      value: '<a class="css-class" href="MyClass">MyClass</a> and <a class="css-class" href="MyClass#foo">MyClass\'s foo property</a>.\nAlso, check out <a class="css-class" href="http://www.google.com">Google</a> and\n<a class="css-class" href="https://github.com">GitHub</a>.',
+      raw: '@see {@link MyClass} and [MyClass\'s foo property]{@link MyClass#foo}.\nAlso, check out {@link http://www.google.com|Google} and\n{@link https://github.com GitHub}.',
+    }]);
+  });
+
   test('getTag => typed', () => {
     let jsdoc = `
       /**
@@ -457,5 +485,20 @@ describe('getTag', () => {
         raw: '@param {string} [optionalParam=\'default text\'] An optional param with a description without a dash',
       },
     ]);
+  });
+
+  test('getTag => @type', () => {
+    expect(getTag('/**\n * @type {string} description\n */')('@type')).toStrictEqual({ 
+      tag: '@type', 
+      type: 'string',
+      description: 'description',
+      raw: '@type {string} description',
+    });
+  });
+  expect(getTag('/**\n * @type {string}\n */')('@type')).toStrictEqual({ 
+    tag: '@type', 
+    type: 'string',
+    description: undefined,
+    raw: '@type {string}',
   });
 });

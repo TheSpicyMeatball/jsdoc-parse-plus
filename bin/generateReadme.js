@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const ejs = require('ejs');
 const { copyFileSync, existsSync, readdirSync, readFileSync, writeFileSync, exists } = require('fs');
 const { join, resolve } = require('path');
@@ -139,7 +141,7 @@ ${util.example.map(x => x.value).join('\n')}
   }
 
   if (isNotNullOrEmpty(examples)) {
-    examples = '<h4>Examples</h4>\n\n' + examples
+    examples = '<h4>Examples</h4>\n\n' + examples;
   }
 
   const _import = `

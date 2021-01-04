@@ -1,3 +1,3 @@
-import { ITag } from '../types';
+import { InlineLink, ITag } from '../types';
 
-export type TagMapFunction = (jsdoc: string) => ITag | Array<ITag|ITag[]>;
+export type TagMapFunction = (jsdoc: string, linkRenderer?: (link: InlineLink) => string) => ITag | Array<ITag|ITag[]>;
