@@ -73,20 +73,26 @@ export type GetCommentsFromFileConfig = { keepIndent?: boolean };
 export type ToCommentStringConfig = { indentChars?: number };
 ```
 
+<a id="using-linkRenderer"></a>
 <h2>Using a custom linkRenderer</h2>
 <p>
   Some functions have an optional <code>linkRenderer</code> which is used to convert inline 
   <code>{@link}</code> and <code>{@tutorial}</code> tags to clickable links.
 </p>
 <p>
-  By default, the output will be a basic link like:
+  If you do not specify <code>linkRenderer</code>, the internal <code>linkRenderer</code> will output a basic link:
 </p>
 
 ```
+const internalLinkRenderer = (link: InlineLink) => `<a href="${link.url}">${link.text}</a>
+
+// outputs =>
 <a href="url">text</a>
 ```
 
-<p>However, you can override that by providing your own <code>linkRenderer</code>. For example:</p>
+<p>
+  However, you can override that by providing your own <code>linkRenderer</code>. For example, if you wanted to add a css class to your links, you would create a function like the following and pass that in as your <code>linkRenderer</code>:
+</p>
 
 ```
 const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.url}">${link.text}</a>
@@ -94,6 +100,8 @@ const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.
 // outputs =>
 <a class="css-class" href="url">text</a>
 ```
+
+<p>It doesn't even have to be an anchor tag. Your custom function can return any string so you have the flexibility to do anything special that you might need.</p>
 
 <p><em>Without further ado, the utils...</em></p>
 <hr />
@@ -175,10 +183,10 @@ getCommentsFromFile(file);
       <thead>
       <tr>
         <th>Param</th>
-        <th>Type</th><th>Default</th></tr>
+        <th>Type</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td><td></td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
-    </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag | ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc string</td><td>string</td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td></tr></tbody>
+    </table><p><b>Returns:</b> {(tag: string) =&gt; ITag | Array&lt;ITag | ITag[]&gt;} Function to get the tag or array of all tags that go by that name</p><blockquote><p>For more information on <code>linkRenderer</code>, please see <a href="#using-linkRenderer">Using a custom linkRenderer</a>.</p></blockquote>
   <h4>Import</h4>
 
 ```
@@ -300,8 +308,8 @@ tag('@customTag');
         <th>Param</th>
         <th>Type</th><th>Default</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
-    </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>customTags <span>(optional)</span></b></p>Optional array of custom tags parse</td><td>string[]</td><td>[]</td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td></td></tr></tbody>
+    </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p><blockquote><p>For more information on <code>linkRenderer</code>, please see <a href="#using-linkRenderer">Using a custom linkRenderer</a>.</p></blockquote>
   <h4>Import</h4>
 
 ```
@@ -442,10 +450,10 @@ parse(jsdoc, ['customTag', 'docgen_types']);
       <thead>
       <tr>
         <th>Param</th>
-        <th>Type</th><th>Default</th></tr>
+        <th>Type</th></tr>
       </thead>
-      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td><td></td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td><td></td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td><td>linkRenderer</td></tr></tbody>
-    </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p>
+      <tbody><tr><td><p><b>jsdoc</b></p>The entire jsdoc comment string</td><td>string</td></tr><tr><td><p><b>tags</b></p>The tags to parse</td><td>string[]</td></tr><tr><td><p><b>linkRenderer <span>(optional)</span></b></p>Optional function to override default rendering of inline link and tutorial tags</td><td>(link: InlineLink) =&gt; string</td></tr></tbody>
+    </table><p><b>Returns:</b> {object} Object with keys of each parsed tag</p><blockquote><p>For more information on <code>linkRenderer</code>, please see <a href="#using-linkRenderer">Using a custom linkRenderer</a>.</p></blockquote>
   <h4>Import</h4>
 
 ```
@@ -637,16 +645,16 @@ README.md -- this file
       └───index.d.ts - 784 Bytes
       └───index.js - 2.29 KB
     └───/getTag
-      └───index.d.ts - 628 Bytes
-      └───index.js - 1.11 KB
+      └───index.d.ts - 768 Bytes
+      └───index.js - 1.24 KB
       └───index.d.ts - 388 Bytes
       └───index.js - 1.22 KB
     └───/parse
-      └───index.d.ts - 638 Bytes
-      └───index.js - 1.6 KB
+      └───index.d.ts - 778 Bytes
+      └───index.js - 1.74 KB
     └───/parseTags
-      └───index.d.ts - 605 Bytes
-      └───index.js - 918 Bytes
+      └───index.d.ts - 745 Bytes
+      └───index.js - 1.03 KB
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.58 KB
@@ -660,22 +668,22 @@ README.md -- this file
       └───types.d.ts - 177 Bytes
       └───types.js - 79 Bytes
       └───utils.d.ts - 2.12 KB
-      └───utils.js - 13.47 KB
+      └───utils.js - 13.5 KB
   └───/es6
     └───/getCommentsFromFile
       └───index.d.ts - 784 Bytes
       └───index.js - 2.13 KB
     └───/getTag
-      └───index.d.ts - 628 Bytes
-      └───index.js - 1005 Bytes
+      └───index.d.ts - 768 Bytes
+      └───index.js - 1.12 KB
       └───index.d.ts - 388 Bytes
       └───index.js - 272 Bytes
     └───/parse
-      └───index.d.ts - 638 Bytes
-      └───index.js - 1.47 KB
+      └───index.d.ts - 778 Bytes
+      └───index.js - 1.61 KB
     └───/parseTags
-      └───index.d.ts - 605 Bytes
-      └───index.js - 775 Bytes
+      └───index.d.ts - 745 Bytes
+      └───index.js - 915 Bytes
     └───/removeTags
       └───index.d.ts - 306 Bytes
       └───index.js - 1.45 KB
@@ -689,7 +697,7 @@ README.md -- this file
       └───types.d.ts - 177 Bytes
       └───types.js - 12 Bytes
       └───utils.d.ts - 2.12 KB
-      └───utils.js - 11.94 KB
+      └───utils.js - 11.97 KB
 ```
 
 <a href="#license"></a>

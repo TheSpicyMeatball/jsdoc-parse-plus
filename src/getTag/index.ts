@@ -7,6 +7,8 @@ import { getTagMap, getTags } from './../_private/utils';
  * @param {string} jsdoc - The entire jsdoc string
  * @param {(link: InlineLink) => string} [linkRenderer] - Optional function to override default rendering of inline link and tutorial tags
  * @returns {(tag: string) => ITag | Array<ITag | ITag[]>} Function to get the tag or array of all tags that go by that name
+ * @docgen_note
+ * For more information on <code>linkRenderer</code>, please see {@link #using-linkRenderer|Using a custom linkRenderer}.
  */
 export const getTag = (jsdoc: string, linkRenderer?: (link: InlineLink) => string) : (tag: string) => ITag | Array<ITag|ITag[]> => {
   const tagMap = getTagMap();

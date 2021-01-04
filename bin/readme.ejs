@@ -27,20 +27,26 @@
 <%= interfaces %>
 ```
 
+<a id="using-linkRenderer"></a>
 <h2>Using a custom linkRenderer</h2>
 <p>
   Some functions have an optional <code>linkRenderer</code> which is used to convert inline 
   <code>{@link}</code> and <code>{@tutorial}</code> tags to clickable links.
 </p>
 <p>
-  By default, the output will be a basic link like:
+  If you do not specify <code>linkRenderer</code>, the internal <code>linkRenderer</code> will output a basic link:
 </p>
 
 ```
+const internalLinkRenderer = (link: InlineLink) => `<a href="${link.url}">${link.text}</a>
+
+// outputs =>
 <a href="url">text</a>
 ```
 
-<p>However, you can override that by providing your own <code>linkRenderer</code>. For example:</p>
+<p>
+  However, you can override that by providing your own <code>linkRenderer</code>. For example, if you wanted to add a css class to your links, you would create a function like the following and pass that in as your <code>linkRenderer</code>:
+</p>
 
 ```
 const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.url}">${link.text}</a>
@@ -48,6 +54,8 @@ const myLinkRenderer = (link: InlineLink) => `<a class="css-class" href="${link.
 // outputs =>
 <a class="css-class" href="url">text</a>
 ```
+
+<p>It doesn't even have to be an anchor tag. Your custom function can return any string so you have the flexibility to do anything special that you might need.</p>
 
 <p><em>Without further ado, the utils...</em></p>
 <hr />

@@ -124,8 +124,8 @@ export const getParam = (tag: '@param' | '@property' | '@prop' | '@arg' | '@argu
     const description = processInlineLinks(match[3].trim(), linkRenderer);
     let defaultValue: string;
 
-    if (optional && !name.startsWith('{')) {
-      defaultValue = name.replace(first(name.split('=', 1)) + '=', '');
+    if (optional && !name.startsWith('{') && name.indexOf('=') >= 0) {
+      defaultValue = name.replace(first(name.split('=', 1), '') + '=', '');
       name = name.replace('=' + defaultValue, '');
     }
     
